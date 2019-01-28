@@ -1,28 +1,39 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
-	(void)createArr;
+	(void)factory;
 }
 
 OperandFactory::OperandFactory(const OperandFactory & other){
 	(void) other;
 }
 
-const OperandFactory& OperandFactory::operator=(const OperandFactory & other){
-	(void) other;
-}
+// const OperandFactory& OperandFactory::operator=(const OperandFactory & other){
+// 	(void) other;
+// 	return *this;
+// }
 
 OperandFactory::~OperandFactory(){
 
 }
 
-IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-	return createArr[type](value);
-}
+// IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
+// 	return factory[type](value);
+// }
 
-IOperand const * createInt8(std::string const & value) const{
-	return new <>(value);
+// IOperand const * OperandFactory::createInt8(std::string const & value) const{
+// 	return new Int(value);
+// }
+// IOperand const * OperandFactory::createInt16(std::string const & value) const{
+// 	return new Int(value);
+
+// }
+// IOperand const * OperandFactory::createInt32(std::string const & value) const{
+// 	return new Int(value);
+
+// }
+IOperand const * OperandFactory::createFloat(std::string const & value) const{
+	return new Operand(value);
 }
-IOperand const * createInt16(std::string const & value) const;
-IOperand const * createInt32(std::string const & value) const;
-IOperand const * createFloat(std::string const & value) const;
-IOperand const * createDouble(std::string const & value) const;
+IOperand const * OperandFactory::createDouble(std::string const & value) const{
+	return new Operand(value);
+}
