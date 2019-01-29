@@ -1,6 +1,11 @@
 #include "Operand.hpp"
 int main(){
-	IOperand *p = new Operand<int>(45);
-	std::cout << p->toString() << std::endl; 
-	delete p;
+	// Operand<int32_t> a(45);
+	// Operand<int32_t> b(8);
+	// Operand<int32_t> c;
+
+	// c = a + b;
+	// std::cout << a.toString() << std::endl; 
+	// std::cout << b.toString() << std::endl; 
+	// std::cout << c.toString() << std::endl; 
 }
