@@ -3,9 +3,9 @@ OperandFactory::OperandFactory(){
 	(void)factory;
 }
 
-OperandFactory::OperandFactory(const OperandFactory & other){
-	(void) other;
-}
+// OperandFactory::OperandFactory(const OperandFactory & other){
+// 	(void) other;
+// }
 
 // const OperandFactory& OperandFactory::operator=(const OperandFactory & other){
 // 	(void) other;
@@ -31,9 +31,11 @@ OperandFactory::~OperandFactory(){
 // 	return new Int(value);
 
 // }
-IOperand const * OperandFactory::createFloat(std::string const & value) const{
-	return new Operand(value);
-}
-IOperand const * OperandFactory::createDouble(std::string const & value) const{
-	return new Operand(value);
-}
+// IOperand const * OperandFactory::createFloat(std::string const & value) const{
+// 	IOperand  *tmp = new Operand<float, 32>(std::stof(value));
+// 	return tmp;
+// }
+
+// IOperand const * OperandFactory::createDouble(std::string const & value) const{
+// 	return new Operand<double, 64>(std::stod(value));
+// }
