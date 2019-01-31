@@ -21,8 +21,11 @@ $(OBJDIR):
 $(OBJ) : $(OBJDIR)%.o : $(SRCDIR)%.cpp ./headers/*.hpp
 	g++ -std=c++11 $(FLAGS) -o $@ -c $< -I ./headers
 
+debug:
+	g++ -std=c++11 -g sources/*.cpp -I ./headers -o debug
+
 clean:
-	rm -rf $(OBJDIR)
+	rm -rf $(OBJDIR) debug
 
 fclean: clean
 	rm -rf $(NAME)

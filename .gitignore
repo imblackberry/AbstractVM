@@ -1,2 +1,5 @@
+avm
+debug
 objects
 .vscode
+*.dSYM

@@ -1,11 +1,12 @@
 #include "Operand.hpp"
 int main(){
-	// Operand<int32_t> a(45);
+	
+	Operand<double> a("45.65600001");
 	// Operand<int32_t> b(8);
 	// Operand<int32_t> c;
 
 	// c = a + b;
-	// std::cout << a.toString() << std::endl; 
+	std::cout << a.getValue() << std::endl; 
 	// std::cout << b.toString() << std::endl; 
 	// std::cout << c.toString() << std::endl; 
 }

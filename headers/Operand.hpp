@@ -6,13 +6,13 @@ template <class T>
 class Operand : public IOperand{
 	public:
 		Operand();
-		Operand(T  value): _value(value){_strValue = std::to_string(value);}
+		Operand(std::string str): _strValue(str) {
+			_value = static_cast <T> (std::stod(str));
+			}
 		// Operand(const Operand & other);
 		Operand const & operator=(Operand const & other){
 			if (this != &other){
 				_value = other._value;
-				_precision = other._precision;
-				_type = other._type;
 				_strValue = other._strValue;
 			}
 			return *this;
@@ -29,8 +29,6 @@ class Operand : public IOperand{
 		virtual std::string const & toString( void ) const{return _strValue;} // String representation of the instance
 	private:
 		T				_value;
-		int				_precision;
-		eOperandType	_type;
 		std::string		_strValue;
 };
 // ------------------------------
