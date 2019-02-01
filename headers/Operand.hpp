@@ -2,39 +2,42 @@
 #define OPERAND_HPP
 #include "IOperand.hpp"
 #include <boost/lexical_cast.hpp>
-#define BITS_IN_BYTE 8
 template <class T>
 class Operand : public IOperand{
 	public:
 		Operand();
-		Operand(std::string str): _strValue(str) {
-			_value = static_cast <T> (std::stod(str));
-			}
+		Operand(std::string str): _strValue(str) {}
 		// Operand(const Operand & other);
 		Operand const & operator=(Operand const & other){
 			if (this != &other){
 				_strValue = other._strValue;
-				_value = other._value;
 			}
 			return *this;
 		}
 		~Operand(){}
-		T const & getValue() const {return _value;}
-		// virtual int					getPrecision(void) const;	// Precision of the type of the instance
-		virtual	eOperandType		getType(void) const;	// Type of the instance
-		IOperand const *	operator+(IOperand const & rhs) const {
-			Operand<T> const *tmp = new Operand (boost::lexical_cast<std::string>(_value + static_cast<T>(std::stod(rhs.toString()))));
-			return tmp;
-		} // Sum
+		T const 			getValue() const {
+			return static_cast<T>(std::stod(toString()));
+			}
+		int					getPrecision(void) const;	// Precision of the type of the instance
+		eOperandType		getType(void) const;	// Type of the instance
+		IOperand const *	operator+(IOperand const & rhs) const;
+		// 	IOperand const *result;
+	
+		// 	if (this->getType() < rhs.getType())
+		// 		result = rhs + *this;
+		// 	return new Operand<T>(boost::lexical_cast<std::string>(getValue() + static_cast<T>(std::stod(rhs.toString()))));
+		// 	// }else
+		// 		// result = new Operand<T>(boost::lexical_cast<std::string>(getValue() + static_cast<T>(std::stod(rhs.toString()))));
+		// 	// return result;
+		// } // Sum
 		// virtual IOperand const *	operator-(IOperand const & rhs) const; // Difference
 		// virtual IOperand const *	operator*(IOperand const & rhs) const; // Product
 		// virtual IOperand const *	operator/(IOperand const & rhs) const; // Quotient
 		// virtual IOperand const *	operator%(IOperand const & rhs) const; // Modulo
-		virtual std::string const & toString( void ) const {
+		std::string const & toString( void ) const {
 			return _strValue;
 		} // String representation of the instance
 	private:
-		T				_value;
 		std::string		_strValue;
 };
 // --------------------------------------------------------------------------//
