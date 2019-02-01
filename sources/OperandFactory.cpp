@@ -1,6 +1,6 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
-	(void)factory;
+	factory[0] = &OperandFactory::createInt8;
 }
 
 // OperandFactory::OperandFactory(const OperandFactory & other){
@@ -16,13 +16,13 @@ OperandFactory::~OperandFactory(){
 
 }
 
-// IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-// 	return factory[type](value);
-// }
+IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
+	return factory[0](value);
+}
 
-// IOperand const * OperandFactory::createInt8(std::string const & value) const{
-// 	return new Int(value);
-// }
+IOperand const * OperandFactory::createInt8(std::string const & value) const{
+	return new Operand<int8_t>(value);
+}
 // IOperand const * OperandFactory::createInt16(std::string const & value) const{
 // 	return new Int(value);
 

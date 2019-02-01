@@ -45,14 +45,10 @@ IOperand const *	Operand<T>::operator*(IOperand const & rhs) const{
 
 template <class T>
 IOperand const * Operand<T>::operator-(IOperand const & rhs) const{
-	IOperand const *minusOne = new Operand<int32_t>("-1");
-	IOperand const *tmp;
-	if (this->getPrecision() < rhs.getPrecision()){
-		tmp = rhs - *this;
-		return *minusOne * *tmp;
-	}else{
-		return new Operand<T>(boost::lexical_cast<std::string>(getValue() - static_cast<T>(std::stod(rhs.toString()))));
-	}
+	if (this->getPrecision() < rhs.getPrecision())
+		return rhs - *this;
+	return new Operand<T>(boost::lexical_cast<std::string>(getValue() - static_cast<T>(std::stod(rhs.toString()))));
+
 }
 template <class T>
 IOperand const *	Operand<T>::operator/(IOperand const & rhs) const{

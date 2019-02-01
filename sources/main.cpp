@@ -16,6 +16,7 @@ int main(){
 	// 100,8 - 8 = 92,7
 	// c = sum<double>(a, b);
 	// c = *a + *b;
+
 	std::cout << a->toString() << std::endl; 
 	std::cout << b->toString() << std::endl; 
 	std::cout << c->toString() << std::endl;
