@@ -13,7 +13,7 @@ FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJ) ./headers/*.hpp
-	g++ -std=c++11 $(FLAGS) $(OBJ) -o $(NAME) -lncurses
+	g++ -std=c++11 $(FLAGS) $(OBJ) -o $(NAME)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
