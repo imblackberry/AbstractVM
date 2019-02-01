@@ -10,10 +10,9 @@ Operand<T> * sum(Operand<T> * a, Operand<T> *b){
 }
 int main(){
 
-	Operand<double> *a = new Operand<double>("45.65600001");
-	Operand<double> *b = new Operand<double>("1");
+	Operand<int_fast16_t> *a = new Operand<int_fast16_t>("45");
+	Operand<int_fast16_t> *b = new Operand<int_fast16_t>("1");
 	IOperand const *c = *a + *b;
-
 	// c = sum<double>(a, b);
 	// c = *a + *b;
 	std::cout << a->toString() << std::endl; 

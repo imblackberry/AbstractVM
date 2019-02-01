@@ -21,9 +21,9 @@ class Operand : public IOperand{
 		~Operand(){}
 		T const & getValue() const {return _value;}
 		// virtual int					getPrecision(void) const;	// Precision of the type of the instance
-		// virtual	eOperandType		getType(void) const;	// Type of the instance
+		virtual	eOperandType		getType(void) const;	// Type of the instance
 		IOperand const *	operator+(IOperand const & rhs) const {
-			IOperand const *tmp = new Operand (boost::lexical_cast<std::string>(_value + static_cast<T>(std::stod(rhs.toString()))));
+			Operand<T> const *tmp = new Operand (boost::lexical_cast<std::string>(_value + static_cast<T>(std::stod(rhs.toString()))));
 			return tmp;
 		} // Sum
 		// virtual IOperand const *	operator-(IOperand const & rhs) const; // Difference
@@ -37,9 +37,9 @@ class Operand : public IOperand{
 		T				_value;
 		std::string		_strValue;
 };
-// ------------------------------
-// 			5 CLASS DECLARATION
-// ------------------------------
+// --------------------------------------------------------------------------//
+// 								5 CLASS DECLARATION							 //
+// --------------------------------------------------------------------------//
 template class Operand<int8_t>;
 template class Operand<int16_t>;
 template class Operand<int32_t>;
