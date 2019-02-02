@@ -4,11 +4,11 @@
 #include <iostream>
 
 class OperandFactory{
+	public:
 	OperandFactory();
 	// OperandFactory(const OperandFactory & other);
 	// const OperandFactory& operator=(const OperandFactory & other);
 	~OperandFactory();
-	public:
 		IOperand const * createOperand(eOperandType type, std::string const & value ) const;
 	
 	private:

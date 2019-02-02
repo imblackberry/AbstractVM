@@ -3,11 +3,16 @@
 #include "IOperand.hpp"
 #include <boost/lexical_cast.hpp>
 #include <math.h>
+#include <algorithm>
+#include <OperandFactory.hpp>
 template <class T>
 class Operand : public IOperand{
 	public:
 		Operand();
-		Operand(std::string str): _strValue(str) {}
+		Operand(std::string str) {
+			T n = static_cast<T>(std::stod(str));
+			_strValue = std::to_string(n);
+		}
 		// Operand(const Operand & other);
 		Operand const & operator=(Operand const & other){
 			if (this != &other){
@@ -16,7 +21,7 @@ class Operand : public IOperand{
 			return *this;
 		}
 		~Operand(){}
-		T const 			getValue() const { return static_cast<T>(std::stod(toString())); }
+		T const 			getValue() const;
 		int					getPrecision(void) const;	// Precision of the type of the instance
 		eOperandType		getType(void) const;	// Type of the instance
 		IOperand const *	operator+(IOperand const & rhs) const;	// Sum
@@ -24,7 +29,7 @@ class Operand : public IOperand{
 		IOperand const *	operator*(IOperand const & rhs) const; // Product
 		IOperand const *	operator/(IOperand const & rhs) const; // Quotient
 		IOperand const *	operator%(IOperand const & rhs) const; // Modulo
-		std::string const & toString( void ) const { return _strValue; } // String representation of the instance
+		std::string const & toString( void ) const ;//{ return _strValue; } // String representation of the instance
 	private:
 		std::string		_strValue;
 };

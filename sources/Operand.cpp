@@ -1,4 +1,15 @@
 #include "Operand.hpp"
+
+
+
+template <class T>
+std::string const & Operand<T>::toString( void ) const { return _strValue; }
+
+template <class T>
+T const 			Operand<T>::getValue() const {
+	return static_cast<T>(std::stod(toString()));
+}
+
 // --------------------------------------------------------------------------//
 // 						5 CLASS METHOD SPECIALIZATION						 //
 // --------------------------------------------------------------------------//
@@ -33,33 +44,36 @@ template <class T>
 IOperand const *	Operand<T>::operator+(IOperand const & rhs) const {
 	if (this->getPrecision() < rhs.getPrecision())
 		return rhs + *this;
-	return new Operand<T>(boost::lexical_cast<std::string>(getValue() + static_cast<T>(std::stod(rhs.toString()))));
+	return new Operand<T>(std::to_string(getValue() + static_cast<T>(std::stod(rhs.toString()))));
 }
 
 template <class T>
 IOperand const *	Operand<T>::operator*(IOperand const & rhs) const{
 	if (this->getPrecision() < rhs.getPrecision())
 		return rhs * *this;
-	return new Operand<T>(boost::lexical_cast<std::string>(getValue() * static_cast<T>(std::stod(rhs.toString()))));
+	return new Operand<T>(std::to_string(getValue() * static_cast<T>(std::stod(rhs.toString()))));
 }
 
 template <class T>
 IOperand const * Operand<T>::operator-(IOperand const & rhs) const{
-	if (this->getPrecision() < rhs.getPrecision())
-		return rhs - *this;
-	return new Operand<T>(boost::lexical_cast<std::string>(getValue() - static_cast<T>(std::stod(rhs.toString()))));
+	OperandFactory factory;
 
+	eOperandType type = std::max(getType(), rhs.getType());
+	return factory.createOperand(type, std::to_string(getValue() - std::stod(rhs.toString())));
 }
+
 template <class T>
 IOperand const *	Operand<T>::operator/(IOperand const & rhs) const{
-	if (this->getPrecision() < rhs.getPrecision())
-		return rhs / *this;
-	return new Operand<T>(boost::lexical_cast<std::string>(getValue() / static_cast<T>(std::stod(rhs.toString()))));
+	OperandFactory factory;
+
+	eOperandType type = std::max(getType(), rhs.getType());
+	return factory.createOperand(type, std::to_string(getValue() / std::stod(rhs.toString())));
 }
 template <class T>
 IOperand const *	Operand<T>::operator%(IOperand const & rhs) const{
-	if (this->getPrecision() < rhs.getPrecision())
-		return rhs % *this;
-	return new Operand<T>(boost::lexical_cast<std::string>(fmod(getValue(), static_cast<T>(std::stod(rhs.toString())))));
+	OperandFactory factory;
+
+	eOperandType type = std::max(getType(), rhs.getType());
+	return factory.createOperand(type, std::to_string(fmod(getValue(), std::stod(rhs.toString()))));
 }
 

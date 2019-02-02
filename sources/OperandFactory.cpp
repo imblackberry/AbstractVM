@@ -1,6 +1,10 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
 	factory.push_back(&OperandFactory::createInt8);
+	factory.push_back(&OperandFactory::createInt16);
+	factory.push_back(&OperandFactory::createInt32);
+	factory.push_back(&OperandFactory::createFloat);
+	factory.push_back(&OperandFactory::createDouble);
 }
 
 // OperandFactory::OperandFactory(const OperandFactory & other){
