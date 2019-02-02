@@ -11,7 +11,7 @@ class Operand : public IOperand{
 		Operand();
 		Operand(std::string str) {
 			T n = static_cast<T>(std::stod(str));
-			_strValue = std::to_string(n);
+			_strValue = DoubleToString(n);
 		}
 		// Operand(const Operand & other);
 		Operand const & operator=(Operand const & other){
@@ -29,9 +29,15 @@ class Operand : public IOperand{
 		IOperand const *	operator*(IOperand const & rhs) const; // Product
 		IOperand const *	operator/(IOperand const & rhs) const; // Quotient
 		IOperand const *	operator%(IOperand const & rhs) const; // Modulo
-		std::string const & toString( void ) const ;//{ return _strValue; } // String representation of the instance
+		std::string const & toString( void ) const; // String representation of the instance
+		std::string			DoubleToString(double const & value) const{
+			std::stringstream sstr;
+			sstr << value;
+			return sstr.str();
+		}
 	private:
 		std::string		_strValue;
+
 };
 // --------------------------------------------------------------------------//
 // 								5 CLASS DECLARATION							 //
