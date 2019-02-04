@@ -3,6 +3,8 @@
 #include <iostream>
 #include <unordered_map>
 #include "Operand.hpp"
+
+
 class OperandFactory{
 	public:
 	OperandFactory();
@@ -20,5 +22,7 @@ class OperandFactory{
 
 		std::unordered_map<eOperandType, IOperand const * (OperandFactory::*)(std::string const &) const > _factory;
 };
+
+typedef IOperand const * (OperandFactory::*CreateFunctions)(std::string const &) const;
 
 #endif

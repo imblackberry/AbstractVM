@@ -1,6 +1,6 @@
 #include "OperandFactory.hpp"
-
-int main(){
+#include <stdlib.h>
+void foo(){
 
 	OperandFactory factory;
 	IOperand const *a = factory.createOperand(Int8, "35");
@@ -13,6 +13,9 @@ int main(){
 	std::cout << "getType() = " << a->getType() << std::endl; 
 	std::cout << "getType() = " << b->getType() << std::endl; 
 	std::cout << "getType() = " << c->getType() << std::endl;
- 
+}
+int main(){
 
+
+	foo();
 }

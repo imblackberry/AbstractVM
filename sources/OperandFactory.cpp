@@ -1,4 +1,5 @@
 #include "OperandFactory.hpp"
+
 OperandFactory::OperandFactory(){
 	_factory[Int8] = &OperandFactory::createInt8;
 	_factory[Int16] = &OperandFactory::createInt16;
@@ -22,7 +23,7 @@ OperandFactory::~OperandFactory(){
 }
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-	IOperand const * (OperandFactory::*f)(std::string const &) const;
+	CreateFunctions f;
 	f = _factory.at(type);
 	return (this->*f)(value);
 }
