@@ -5,24 +5,14 @@
 #include <sstream>
 #include <math.h>
 #include <algorithm>
-#include <OperandFactory.hpp>
+#include <OperandFactory.hpp>//? is it norm?
 template <class T>
 class Operand : public IOperand{
 	public:
 		Operand();
-		Operand(std::string str) {
-			T n = static_cast<T>(std::stod(str));
-			_strValue = DoubleToString(n);
-		}
-		Operand(const Operand & other){
-			*this = other;
-		}
-		Operand const & operator=(Operand const & other){
-			if (this != &other){
-				_strValue = other._strValue;
-			}
-			return *this;
-		}
+		Operand(std::string str);
+		Operand(const Operand & other);
+		Operand const & operator=(Operand const & other);
 		~Operand(){}
 		T const 			getValue() const;
 		int					getPrecision(void) const;	// Precision of the type of the instance

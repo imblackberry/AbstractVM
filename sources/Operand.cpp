@@ -1,12 +1,25 @@
 #include "Operand.hpp"
+template <class T>
+Operand<T>::Operand(){}
 
-//Global ?
-// template <class T>
-// std::string		Operand<T>::DoubleToString(double const & value) const{
-// 	std::stringstream sstr;
-// 	sstr << value;
-// 	return sstr.str();
-// }
+template <class T>
+Operand<T>::Operand(std::string str) {
+	T n = static_cast<T>(std::stod(str));
+	_strValue = DoubleToString(n);
+}
+
+template <class T>
+Operand<T>::Operand(const Operand<T> & other){
+	*this = other;
+}
+
+template <class T>
+Operand<T> const & Operand<T>::operator=(Operand<T> const & other){
+	if (this != &other){
+		_strValue = other._strValue;
+	}
+	return *this;
+}
 
 template <class T>
 std::string const & Operand<T>::toString( void ) const { return _strValue; }

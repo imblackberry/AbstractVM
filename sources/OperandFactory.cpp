@@ -1,20 +1,21 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
-	factory[Int8] = &OperandFactory::createInt8;
-	factory[Int16] = &OperandFactory::createInt16;
-	factory[Int32] = &OperandFactory::createInt32;
-	factory[Float] = &OperandFactory::createFloat;
-	factory[Double] = &OperandFactory::createDouble;
+	_factory[Int8] = &OperandFactory::createInt8;
+	_factory[Int16] = &OperandFactory::createInt16;
+	_factory[Int32] = &OperandFactory::createInt32;
+	_factory[Float] = &OperandFactory::createFloat;
+	_factory[Double] = &OperandFactory::createDouble;
 }
 
-// OperandFactory::OperandFactory(const OperandFactory & other){
-// 	(void) other;
-// }
+OperandFactory::OperandFactory(const OperandFactory & other){
+	*this = other;
+}
 
-// const OperandFactory& OperandFactory::operator=(const OperandFactory & other){
-// 	(void) other;
-// 	return *this;
-// }
+const OperandFactory& OperandFactory::operator=(const OperandFactory & other){
+	if (this != &other)
+		_factory = other._factory;
+	return *this;
+}
 
 OperandFactory::~OperandFactory(){
 
@@ -22,7 +23,7 @@ OperandFactory::~OperandFactory(){
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
 	IOperand const * (OperandFactory::*f)(std::string const &) const;
-	f = factory.at(type);
+	f = _factory.at(type);
 	return (this->*f)(value);
 }
 
