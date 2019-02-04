@@ -1,8 +1,8 @@
 #ifndef OPERANDFACTORY_HPP
 #define OPERANDFACTORY_HPP
 #include <iostream>
-#include <functional>
-#include <map>
+// #include <functional>
+#include <unordered_map>
 #include "Operand.hpp"
 class OperandFactory{
 	public:
@@ -19,7 +19,7 @@ class OperandFactory{
 		IOperand const * createFloat(std::string const & value) const;
 		IOperand const * createDouble(std::string const & value) const;
 
-		std::map<eOperandType, IOperand const * (OperandFactory::*)(std::string const &) const > factory;
+		std::unordered_map<eOperandType, IOperand const * (OperandFactory::*)(std::string const &) const > factory;
 };
 
 #endif

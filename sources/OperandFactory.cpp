@@ -1,11 +1,10 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
-	factory.emplace(Int8, &OperandFactory::createInt8);
-	factory.emplace(Int16, &OperandFactory::createInt16);
-	factory.emplace(Int32, &OperandFactory::createInt32);
-	factory.emplace(Float, &OperandFactory::createFloat);
-	factory.emplace(Double, &OperandFactory::createDouble);
-
+	factory[Int8] = &OperandFactory::createInt8;
+	factory[Int16] = &OperandFactory::createInt16;
+	factory[Int32] = &OperandFactory::createInt32;
+	factory[Float] = &OperandFactory::createFloat;
+	factory[Double] = &OperandFactory::createDouble;
 }
 
 // OperandFactory::OperandFactory(const OperandFactory & other){

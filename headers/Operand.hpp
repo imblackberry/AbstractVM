@@ -2,7 +2,7 @@
 #define OPERAND_HPP
 #include "IOperand.hpp"
 #include <iostream>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 #include <math.h>
 #include <algorithm>
 #include <OperandFactory.hpp>
@@ -34,7 +34,7 @@ class Operand : public IOperand{
 		IOperand const *	operator%(IOperand const & rhs) const; // Modulo
 		std::string const & toString( void ) const; // String representation of the instance
 		std::string			DoubleToString(double const & value) const{
-			std::stringstream sstr;
+			std::ostringstream sstr;
 			sstr << value;
 			return sstr.str();
 		}

@@ -13,16 +13,16 @@ FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJ) ./headers/*.hpp
-	g++ -std=c++11 $(FLAGS) $(OBJ) -o $(NAME)
+	g++ -std=c++14 $(FLAGS) $(OBJ) -o $(NAME)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
 $(OBJ) : $(OBJDIR)%.o : $(SRCDIR)%.cpp ./headers/*.hpp
-	g++ -std=c++11 $(FLAGS) -o $@ -c $< -I ./headers
+	g++ -std=c++14 $(FLAGS) -o $@ -c $< -I ./headers
 
 debug:
-	g++ -std=c++11 -g sources/*.cpp -I ./headers -o debug
+	g++ -std=c++14 -g sources/*.cpp -I ./headers -o debug
 
 clean:
 	rm -rf $(OBJDIR) debug
