@@ -1,10 +1,11 @@
 #include "OperandFactory.hpp"
 OperandFactory::OperandFactory(){
-	factory.push_back(&OperandFactory::createInt8);
-	factory.push_back(&OperandFactory::createInt16);
-	factory.push_back(&OperandFactory::createInt32);
-	factory.push_back(&OperandFactory::createFloat);
-	factory.push_back(&OperandFactory::createDouble);
+	factory.emplace(Int8, &OperandFactory::createInt8);
+	factory.emplace(Int16, &OperandFactory::createInt16);
+	factory.emplace(Int32, &OperandFactory::createInt32);
+	factory.emplace(Float, &OperandFactory::createFloat);
+	factory.emplace(Double, &OperandFactory::createDouble);
+
 }
 
 // OperandFactory::OperandFactory(const OperandFactory & other){
@@ -21,7 +22,9 @@ OperandFactory::~OperandFactory(){
 }
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-	return (this->*factory[type])(value);
+	IOperand const * (OperandFactory::*f)(std::string const &) const;
+	f = factory.at(type);
+	return (this->*f)(value);
 }
 
 IOperand const * OperandFactory::createInt8(std::string const & value) const{

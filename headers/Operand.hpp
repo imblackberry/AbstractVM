@@ -1,6 +1,7 @@
 #ifndef OPERAND_HPP
 #define OPERAND_HPP
 #include "IOperand.hpp"
+#include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <math.h>
 #include <algorithm>
@@ -13,7 +14,9 @@ class Operand : public IOperand{
 			T n = static_cast<T>(std::stod(str));
 			_strValue = DoubleToString(n);
 		}
-		// Operand(const Operand & other);
+		Operand(const Operand & other){
+			*this = other;
+		}
 		Operand const & operator=(Operand const & other){
 			if (this != &other){
 				_strValue = other._strValue;
@@ -39,12 +42,5 @@ class Operand : public IOperand{
 		std::string		_strValue;
 
 };
-// --------------------------------------------------------------------------//
-// 								5 CLASS DECLARATION							 //
-// --------------------------------------------------------------------------//
-template class Operand<int8_t>;
-template class Operand<int16_t>;
-template class Operand<int32_t>;
-template class Operand<float>;
-template class Operand<double>;
+
 #endif
