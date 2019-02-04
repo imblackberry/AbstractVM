@@ -6,12 +6,14 @@
 
 
 class OperandFactory{
+	typedef IOperand const * (OperandFactory::*CreateFunctions)(std::string const &) const;
+
 	public:
-	OperandFactory();
-	OperandFactory(const OperandFactory & other);
-	const OperandFactory& operator=(const OperandFactory & other);
-	~OperandFactory();
-		IOperand const * createOperand(eOperandType type, std::string const & value ) const;
+		OperandFactory();
+		OperandFactory(const OperandFactory & other);
+		const OperandFactory& operator=(const OperandFactory & other);
+		~OperandFactory();
+			IOperand const * createOperand(eOperandType type, std::string const & value ) const;
 	
 	private:
 		IOperand const * createInt8(std::string const & value) const;
@@ -20,9 +22,8 @@ class OperandFactory{
 		IOperand const * createFloat(std::string const & value) const;
 		IOperand const * createDouble(std::string const & value) const;
 
-		std::unordered_map<eOperandType, IOperand const * (OperandFactory::*)(std::string const &) const > _factory;
+		std::unordered_map<eOperandType, CreateFunctions > _factory;
 };
 
-typedef IOperand const * (OperandFactory::*CreateFunctions)(std::string const &) const;
 
 #endif
