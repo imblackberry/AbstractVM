@@ -3,6 +3,19 @@
 #include <unordered_map>
 #include "Lexer.hpp"
 
+enum eOperation{
+	Pop,
+	Dump,
+	Assert,
+	Add,
+	Sub,
+	Mul,
+	Div,
+	Mod,
+	Print,
+	Exit
+};
+
 class Parser{
 	public:
 		Parser(){
@@ -12,7 +25,6 @@ class Parser{
 		Parser const & operator=(Parser const & other);
 		~Parser(){}
 		void getToken(eOption option, IOperand * operand){
-
 		}
 		void pop(IOperand * operand){
 			operands.pop(operand);
