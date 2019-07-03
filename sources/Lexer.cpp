@@ -14,7 +14,8 @@ Lexer::Lexer(std::istream & input) : input(input){
 		//  : file_input;
 }
 Lexer::~Lexer(){}
-void Lexer::makeLexems(){
+
+void Lexer::makeLexems(std::deque<Lexem*> &lexems){
 	std::string str;
 	Lexem *tmp;
 

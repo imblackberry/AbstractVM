@@ -2,13 +2,18 @@
 #define ABSTRACTVM_HPP
 #include <iostream>
 #include <deque>
+#include "Lexer.hpp"
 #include "IOperand.hpp"
+#define NO_ARGS 1
 
 class AbstractVM{
+	public:
+		AbstractVM() : lexer(std::cin) { }; //TODO: read from file
+		void launch(std::string fileName);
 	private:
-	Lexer lexerVM;
-	Parser parserVM;
-	std::deque<IOperator*>;
+		Lexer lexer;
+		//Parser parser;
+		std::deque<Lexem*> lexems;
 };
 
 #endif

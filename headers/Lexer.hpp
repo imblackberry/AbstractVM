@@ -31,7 +31,7 @@ class Lexer{
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		~Lexer();
-		void	makeLexems();
+		void	makeLexems(std::deque<Lexem*> & lexems);
 
 	private:
 		Lexem * makeOperation(std::string & str);

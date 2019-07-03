@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "Lexer.hpp"
+#include "AbstractVM.cpp"
 void foo(){
 
 	// OperandFactory factory;
@@ -15,7 +15,14 @@ void foo(){
 	// std::cout << "getType() = " << c->getType() << std::endl;
 }
 int main(int ac, char **av){
-	Lexer lexer(std::cin);
+	AbstractVM vm;
 
-	lexer.makeLexems();
+	if (ac == NO_ARGS)
+		vm.launch(std::string());
+	else
+	{
+		for (int i = 0; i < ac; i++)
+			vm.launch(av[i]);
+	}
+	
 }

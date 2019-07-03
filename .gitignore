@@ -3,3 +3,4 @@ debug
 objects
 .vscode
 *.dSYM
+DS_Store

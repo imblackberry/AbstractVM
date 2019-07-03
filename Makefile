@@ -1,6 +1,6 @@
 NAME = avm
 
-SRC =   main.cpp OperandFactory.cpp Operand.cpp 
+SRC =   main.cpp OperandFactory.cpp Operand.cpp AbstractVM.cpp
 
 SRCDIR = sources/
 
