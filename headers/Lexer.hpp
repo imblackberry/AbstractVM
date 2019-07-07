@@ -17,7 +17,7 @@ enum eLexemType{
 
 struct Lexem
 {
-	Lexem(eLexemType type, std::string const & str) : type(type), capacity(str) {
+	Lexem(eLexemType type, std::string const str) : type(type), capacity(str) {
 		std::cout << "type = " << type << " capacity = " << capacity << std::endl;
 	}
 	eLexemType		type;

@@ -9,76 +9,22 @@ Lexer::~Lexer(){}
 
 void Lexer::makeLexems(std::deque<Lexem*> &lexems){
 	std::string line;
-	std::string parseLine(std::string("(assert|push)[ \f\r\t\v]+([a-z]+[0-9]*)\\((") + INTEGERVALUE + "|" + FRACTIONVALUE + ")\\)");
-	const std::regex parseRegex(parseLine.c_str());
+	std::string parseLine(std::string("(assert|push)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
+				+ INTEGERVALUE + "|" + FRACTIONVALUE + ")\\)");//todo comments and ";;" - exit
 	std::smatch tokensInLine;
-	Lexem *lexem = nullptr;
 
 	for (size_t i = 0; std::getline(input, line).eof() != true; i++) {
-		std::cout << i << " line == " << line << std::endl;
-		if (std::regex_match(line, tokensInLine, parseRegex)) {
-
-			for (size_t i = 0; i < tokensInLine.size(); i++) {
-				std::ssub_match token = tokensInLine[i];
-				std::cout << "token " << i << " = " << token.str() << "\n";
-
-				lexems.push_back(lexem);
-	// 	if (tmp->capacity == "push" || tmp->capacity == "pop"){
-	// 		makeOperandType(str);
-	// 		makeValue(str);
-	// 	}
-	// 	checkEndOfStr(str);
+		std::cout << i << " line == |" << line << "|" << std::endl;
+		if (std::regex_match(line, tokensInLine, std::regex(parseLine.c_str()))) {
+			for (size_t i = 1; i < tokensInLine.size(); i++) {
+				lexems.push_back(new Lexem(static_cast<eLexemType>(i), tokensInLine[i].str())); //todo [Х] leaks
 			}
 		}
 		//else error
 	}
 }
 
-// Lexem * Lexer::makeOperation(std::string & str){
-	// std::string validOp[11] = {"push", "pop", "dump", "assert", "add",
-	// 							"sub", "mull", "div", "mod", "print", "exit"};
-	// size_t OpIndex = 0;
-	// std::string regexStr;
-	// std::regex operation;
-	// for (OpIndex = 0; OpIndex < 11; OpIndex++){
-	// 	regexStr = "[ \f\r\t\v]*" + validOp[OpIndex] + ".*";
-	// 	operation = regexStr.c_str();
-	// 	if (std::regex_match(str, operation) == true){
-	// 		str.erase(0, str.find(validOp[OpIndex]) + validOp[OpIndex].size());
-	// 		return new Lexem(Operation, validOp[OpIndex]);
-	// 	}
-	// }
-	// return nullptr;
-// }
+// std::string validOp[11] = {"push", "pop", "dump", "assert", "add",
+//							"sub", "mull", "div", "mod", "print", "exit"};
 
-// Lexem * Lexer::makeOperandType(std::string & str){
-// 	std::string validType[5] = {"int8", "int16", "int32", "float", "double"};
-// 	size_t OpIndex = 0;
-// 	std::string regexStr;
-// 	std::regex operation;
-// 	for (OpIndex = 0; OpIndex < 5; OpIndex++){
-// 		regexStr = "[ \f\r\t\v]*" + validType[OpIndex] + "(.*)[ \f\r\t\v;].*";
-// 		operation = regexStr.c_str();
-// 		if (std::regex_match(str, operation) == true){
-// 			str.erase(0, str.find(validType[OpIndex]) + validType[OpIndex].size());
-// 			return new Lexem(eOperandType, validType[OpIndex]);
-// 		}
-// 	}
-// 	return nullptr;
-// }
-
-// Lexem * Lexer::makeValue(std::string & str){
-// 	std::string capacity = "";
-// 	return new Lexem(Value, capacity);
-
-// }
-
-// void Lexer::checkEndOfStr(std::string & str){
-// 	std::string ws = " \f\r\t\v";
-// 	size_t pos = str.find_first_not_of(ws);
-
-// 	if (str[pos] == str.back() || str[pos] == ';' || pos == std::string::npos)
-// 		std::cout << "norm" << std::endl;
-// 	else
-// 		std::cout << "fuck" << std::endl;
-// }
+// 	std::string validTypes[5] = {"int8", "int16", "int32", "float", "double"};
