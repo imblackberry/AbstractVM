@@ -8,7 +8,8 @@
 
 class AbstractVM{
 	public:
-		AbstractVM() : lexer(std::cin) { }; //TODO: read from file
+		AbstractVM() : lexer(std::cin) { } //TODO: read from file
+		~AbstractVM() {}
 		void launch(std::string fileName);
 	private:
 		Lexer lexer;

@@ -8,19 +8,20 @@ Lexer::Lexer(std::istream & input) : input(input){
 Lexer::~Lexer(){}
 
 void Lexer::makeLexems(std::deque<Lexem*> &lexems){
-	std::string str;
-	Lexem *tmp;
+	std::string line;
+	Lexem *tmp = nullptr;
 
-	// for (size_t i = 1; std::getline(input, str).eof() != true; i++){
-	// 	std::cout << i << " str == " << str << std::endl;
-	// 	tmp = makeOperation(str);
-	// 	lexems.push_back(tmp);
+	for (size_t i = 0; std::getline(input, line).eof() != true; i++){
+		std::cout << i << " line == " << line << std::endl;
+
+		// tmp = makeOperation(line);
+		lexems.push_back(tmp);
 	// 	if (tmp->capacity == "push" || tmp->capacity == "pop"){
 	// 		makeOperandType(str);
 	// 		makeValue(str);
 	// 	}
 	// 	checkEndOfStr(str);
-	// }
+	}
 }
 
 // Lexem * Lexer::makeOperation(std::string & str){

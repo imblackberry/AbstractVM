@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "AbstractVM.cpp"
+#include "AbstractVM.hpp"
 void foo(){
 
 	// OperandFactory factory;
@@ -24,5 +24,5 @@ int main(int ac, char **av){
 		for (int i = 0; i < ac; i++)
 			vm.launch(av[i]);
 	}
-	
+	return 0;
 }
