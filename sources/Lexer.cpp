@@ -9,14 +9,14 @@ Lexer::~Lexer(){}
 
 void Lexer::makeLexems(std::deque<Lexem*> &lexems){
 	std::string line;
-	// const std::regex parseLine("([assert|push]+)\\[ \f\r\t\v]+([a-z])");
-	const std::regex parseLine("(assert|push)[ \f\r\t\v]+([a-z]+[0-9]+)\\(([0-9]+)\\)");
+	std::string parseLine(std::string("(assert|push)[ \f\r\t\v]+([a-z]+[0-9]*)\\((") + INTEGERVALUE + "|" + FRACTIONVALUE + ")\\)");
+	const std::regex parseRegex(parseLine.c_str());
 	std::smatch tokensInLine;
 	Lexem *lexem = nullptr;
 
 	for (size_t i = 0; std::getline(input, line).eof() != true; i++) {
 		std::cout << i << " line == " << line << std::endl;
-		if (std::regex_match(line, tokensInLine, parseLine)) {
+		if (std::regex_match(line, tokensInLine, parseRegex)) {
 
 			for (size_t i = 0; i < tokensInLine.size(); i++) {
 				std::ssub_match token = tokensInLine[i];
