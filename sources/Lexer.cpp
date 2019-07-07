@@ -9,18 +9,28 @@ Lexer::~Lexer(){}
 
 void Lexer::makeLexems(std::deque<Lexem*> &lexems){
 	std::string line;
-	Lexem *tmp = nullptr;
+	// const std::regex parseLine("([assert|push]+)\\[ \f\r\t\v]+([a-z])");
+	const std::regex parseLine("(assert|push)[ \f\r\t\v]+([a-z]+[0-9]+)\\(([0-9]+)\\)");
+	std::smatch tokensInLine;
+	Lexem *lexem = nullptr;
 
-	for (size_t i = 0; std::getline(input, line).eof() != true; i++){
+	for (size_t i = 0; std::getline(input, line).eof() != true; i++) {
 		std::cout << i << " line == " << line << std::endl;
+		if (std::regex_match(line, tokensInLine, parseLine)) {
 
-		// tmp = makeOperation(line);
-		lexems.push_back(tmp);
+			for (size_t i = 0; i < tokensInLine.size(); i++) {
+				std::ssub_match token = tokensInLine[i];
+				std::cout << "token " << i << " = " << token.str() << "\n";
+
+				lexems.push_back(lexem);
 	// 	if (tmp->capacity == "push" || tmp->capacity == "pop"){
 	// 		makeOperandType(str);
 	// 		makeValue(str);
 	// 	}
 	// 	checkEndOfStr(str);
+			}
+		}
+		//else error
 	}
 }
 
