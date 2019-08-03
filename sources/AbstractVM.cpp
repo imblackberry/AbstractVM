@@ -2,6 +2,6 @@
 
 void AbstractVM::launch(std::string fileName)
 {
-    lexer.makeLexems(lexems);
+    lexer.makeLexems();
 	(void)fileName;
 }

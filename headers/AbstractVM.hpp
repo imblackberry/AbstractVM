@@ -14,7 +14,8 @@ class AbstractVM{
 	private:
 		Lexer lexer;
 		//Parser parser;
-		std::deque<Lexem*> lexems;
+		std::deque<IOperand*> _operands;
+
 };
 
 #endif

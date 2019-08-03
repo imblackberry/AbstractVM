@@ -5,14 +5,15 @@
 #include <list>
 #include <regex>
 #define NOARGS 1
-#define INTEGERVALUE "[-]?[0-9]+"
-#define FRACTIONVALUE "[-]?[0-9]+.[0-9]+"
+#define INTEGER_VALUE "[-]?[0-9]+"
+#define FRACTION_VALUE "[-]?[0-9]+.[0-9]+"
 #define COMMENT ";"
 
 enum eLexemType{
 	Operation,
 	eOperandType,
-	Value
+	Value,
+	NN
 };
 
 struct Lexem
@@ -31,15 +32,13 @@ class Lexer{
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		~Lexer();
-		void	makeLexems(std::deque<Lexem*> & lexems);
+		void	makeLexems();
 
 	private:
 		Lexem * makeOperation(std::string & str);
-		Lexem * makeOperandType(std::string & str);
-		Lexem * makeValue(std::string & str);
-		void	checkEndOfStr(std::string & str);
-		std::istream & input;
-		std::list<Lexem*> lexems;
+		bool addLexem(size_t iType, std::string token);
+		std::istream & _input;
+		std::list<Lexem*> _lexems;
 };
 
 #endif
