@@ -4,40 +4,35 @@ Lexer::Lexer() : _input(std::cin), _isStandardInput(true) {}
 Lexer::Lexer(std::istream & input) : _input(input){}
 Lexer::~Lexer(){}
 
-void	Lexer::makeLexems(){
+void	Lexer::makeLexems(){ // vars to class, all + only?
 	std::string line;
 	std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
 				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
-	std::string OnlyOpLexemParse("([a-z]+)[ \f\r\t\v]*(.*)");
+	std::string onlyOpLexemParse("([a-z]+)[ \f\r\t\v]*(.*)");
 	eLexemType allLexemTypes[4] = {Operation, eOperandType, Value, NN};
-	eLexemType OnlyOpLexemTypes[2] = {Operation, NN};
+	eLexemType onlyOpLexemTypes[2] = {Operation, NN};
+	std::smatch tokensInLine;
 
 	for (size_t i = 0; std::getline(_input, line).eof() != true; i++) {
 		std::cout << i << " line == |" << line << "|" << std::endl;
-		if (std::regex_match(line, tokensInLine, std::regex(parseLine.c_str()))) {
-			checkAndAddLexems(tokensInLine, allLexemTypes);
+		if (std::regex_match(line, tokensInLine, std::regex(allLexemTypesParse.c_str()))) {
+			if (!checkAndAddLexems(tokensInLine, allLexemTypes))
+				return ;
 		}
-		else if (std::match(line, tokensInLine, std::regex(parseLineOnlyOp.c_str()))) {
-			checkAndAddLexems(tokensInLine, OnlyOpLexemTypes);
+		else if (std::regex_match(line, tokensInLine, std::regex(onlyOpLexemParse.c_str()))) {
+			if (!checkAndAddLexems(tokensInLine, onlyOpLexemTypes))
+				return ;
 		}
-		//todo else exception
+		//todo else exception i + 1 line
 	}
 }
 
-bool checkAndAddLexems(std::smatch & tokensInLine, eLexemType * lineTokenTypes)
-{
-	for (size_t i = 1; i < tokensInLine.size(); i++) {
-		std::cout << i << "		token == |" << tokensInLine[i].str() << "|" << std::endl;
-		if (!addLexem(lineTokenTypes[i - 1], tokensInLine[i].str()))
-			return ;
-	}
-}
 
-bool	Lexer::addLexem(size_t iType, std::string token){
+bool	Lexer::addLexem(eLexemType lexemType, std::string token){
 	std::string exitOperaton = ";;";
-	eLexemType lexemType = static_cast<eLexemType>(iType);
+	// eLexemType lexemType = static_cast<eLexemType>(iType);
 
-	if (iType == NN)
+	if (lexemType == NN)
 	{ //todo NORM FUNCTION
 		if (token.empty()) //no comment
 			return true;
@@ -54,6 +49,15 @@ bool	Lexer::addLexem(size_t iType, std::string token){
 	// std::cout << "[" << i << "]" << tokensInLine[i].str() << std::endl;
 }
 
+bool Lexer::checkAndAddLexems(std::smatch & tokensInLine, eLexemType * lineTokenTypes)
+{
+	for (size_t i = 1; i < tokensInLine.size(); i++) {
+		std::cout << i << "		token == |" << tokensInLine[i].str() << "|" << std::endl;
+		if (!addLexem(lineTokenTypes[i - 1], tokensInLine[i].str()))
+			return false;
+	}
+	return true;
+}
 // std::string validOp[11] = {"push", "pop", "dump", "assert", "add",
 //							"sub", "mull", "div", "mod", "print", "exit"};
 

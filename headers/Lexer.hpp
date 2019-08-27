@@ -36,7 +36,7 @@ class Lexer{
 
 	private:
 		Lexem * makeOperation(std::string & str);
-		bool addLexem(size_t iType, std::string token);
+		bool addLexem(eLexemType lexemType, std::string token);
 		bool checkAndAddLexems(std::smatch & tokensInLine, eLexemType * lineTokenTypes);
 		std::istream & _input;
 		std::list<Lexem*> _lexems;
