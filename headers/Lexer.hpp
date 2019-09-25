@@ -28,17 +28,23 @@ struct Lexem
 class Lexer{
 	public:
 		Lexer();
-		Lexer(std::istream & input);
+		Lexer(std::istream & input = std::cin);
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		~Lexer();
 		void	makeLexems();
 
 	private:
+		struct Parse{
+			std::string expression;
+			std::vector<eLexemType> lexemTypes;//vector?
+		};
 		Lexem * makeOperation(std::string & str);
 		bool addLexem(eLexemType lexemType, std::string token);
-		bool checkAndAddLexems(std::smatch & tokensInLine, eLexemType * lineTokenTypes);
+		bool checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
 		std::istream & _input;
+		Parse fullLine;
+		Parse onlyOpLine;
 		std::list<Lexem*> _lexems;
 		bool _isStandardInput = false;
 };
