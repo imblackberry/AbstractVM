@@ -33,6 +33,7 @@ class Lexer{
 		Lexer const & operator=(Lexer const & other);
 		~Lexer();
 		void	makeLexems();
+		std::list<Lexem*> & getLexems() { return _lexems; }
 
 	private:
 		struct Parse{

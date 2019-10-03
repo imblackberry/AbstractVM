@@ -18,7 +18,7 @@ int main(int ac, char **av){
 	AbstractVM vm;
 
 	if (ac == NO_ARGS)
-		vm.launch(std::string());
+		vm.launch();
 	else
 	{
 		for (int i = 0; i < ac; i++)

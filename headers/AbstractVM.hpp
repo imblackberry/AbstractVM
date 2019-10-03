@@ -10,7 +10,7 @@ class AbstractVM{
 	public:
 		AbstractVM() : lexer(std::cin) { } //TODO: read from file
 		~AbstractVM() {}
-		void launch(std::string fileName);
+		void launch(std::string fileName = std::string());
 	private:
 		Lexer lexer;
 		//Parser parser;
