@@ -24,6 +24,19 @@ enum eOperation{
 	Exit
 };
 
+class Action {
+	Action(){};
+	Action(std::istream & input = std::cin){};
+	Action(const Lexer & other);
+	Action const & operator=(Lexer const & other);
+	~Action();
+
+	void run(){};
+
+	eOperation operation;
+	IOperand * operand;
+};
+
 class Parser{
 	public:
 		Parser() {};
@@ -31,31 +44,30 @@ class Parser{
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		~Parser(){}
-		void push(void) {
-			//OperandFactory factory;
-			//factory.createOperand(getOperandType(), );
-		}
-		void pop(void) {
-			operands.pop_front();
-		}
-		void dump(void) {
-			for (auto operand : operands)
-				std::cout << operand->toString() << std::endl;
-		}
-		// void assert(void) {}
-		void add(void) {
-			if (operands.size() < MIN_SIZE_FOR_MATH_OP)
-				std::cout << "error" << std::endl; //todo exception
-			IOperand const * a = operands[0];
-			operands.pop_front();
-			IOperand const * b = operands[0];
-			operands.pop_front();
-			IOperand const * newOp = *a + *b;
-			operands.push_front(newOp);
+		// void push(void) {
+		// 	//OperandFactory factory;
+		// 	//factory.createOperand(getOperandType(), );
+		// }
+		// void pop(void) {
+		// 	operands.pop_front();
+		// }
+		// void dump(void) {
+		// 	for (auto operand : operands)
+		// 		std::cout << operand->toString() << std::endl;
+		// }
+		// // void assert(void) {}
+		// void add(void) {
+		// 	if (operands.size() < MIN_SIZE_FOR_MATH_OP)
+		// 		std::cout << "error" << std::endl; //todo exception
+		// 	IOperand const * a = operands[0];
+		// 	operands.pop_front();
+		// 	IOperand const * b = operands[0];
+		// 	operands.pop_front();
+		// 	IOperand const * newOp = *a + *b;
+		// 	operands.push_front(newOp);
 
-		}
-		std::unordered_map<eOperation, void (Parser::*)(void)> actions;
-		std::deque<IOperand const *> operands;//
+		// }
+		std::list<Action> actions;
 		std::list<Lexem*> _lexems;
 };
 

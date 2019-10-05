@@ -12,7 +12,7 @@ Lexer::Lexer() : _input(std::cin){
 }
 
 Lexer::Lexer(std::istream & input) : _input(input){
-		const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
+	const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
 				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
 	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, NN};
 	fullLine = {allLexemTypesParse, allLexemTypes};
