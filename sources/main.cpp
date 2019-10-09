@@ -18,11 +18,11 @@ int main(int ac, char **av){
 	AbstractVM vm;
 
 	if (ac == NO_ARGS)
-		vm.launch();
+		vm.run();
 	else
 	{
 		for (int i = 0; i < ac; i++)
-			vm.launch(av[i]);
+			vm.run(av[i]);
 	}
 	system("leaks avm");
 	return 0;

@@ -5,10 +5,7 @@
 #include "IOperand.hpp"
 #include "OperandFactory.hpp"
 #define MIN_SIZE_FOR_MATH_OP 2
-// std::string validOp[11] = {"push", "pop", "dump", "assert", "add",
-//							"sub", "mull", "div", "mod", "print", "exit"};
 
-// 	std::string validTypes[5] = {"int8", "int16", "int32", "float", "double"};
 
 enum eOperation{
 	Push,//v
@@ -21,20 +18,23 @@ enum eOperation{
 	Div,
 	Mod,
 	Print,
-	Exit
+	Exit,
+	NN
 };
 
 class Action {
-	Action(){};
-	Action(std::istream & input = std::cin){};
-	Action(const Lexer & other);
-	Action const & operator=(Lexer const & other);
-	~Action();
+	public:
+		Action(){};
+		Action(eOperation operation, IOperand * operand) : 
+			_operation(operation), _operand(operand){};
+		Action(const Action & other);
+		Action const & operator=(Action const & other);
+		~Action(){};
 
-	void run(){};
-
-	eOperation operation;
-	IOperand * operand;
+		void run(){};
+	private:
+		eOperation _operation;
+		IOperand * _operand;
 };
 
 class Parser{
@@ -44,6 +44,37 @@ class Parser{
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		~Parser(){}
+		bool hasOperand(const eOperation operation){
+			if (operation == Push || operation == Assert)
+				return true;
+			return false;
+		}
+		enum eOperation getOperation() {
+			auto lexem = _lexems.begin();
+			if (lexem.type == eLexemType::Operation) {
+				for (size_t i = 0; i < N_OPS; i++) {
+					if (validOps[i] == lexem.capacity){
+						_lexems.pop_front();
+						return static_cast<eOperation>(i);
+					}
+				}
+			}
+			return eOperation::NN;
+		}
+		void addAction(){
+			eOperation operation = getOperation();
+			IOperand * operand = nullptr;
+			if (hasOperand(operation))
+				operand = getOperand();
+			actions.push_back();
+			
+			
+		}
+		void run(){
+			for (lineNum = 0; _lexems < _lexems.end(); lineNum++) {
+				addAction();
+			}
+		}
 		// void push(void) {
 		// 	//OperandFactory factory;
 		// 	//factory.createOperand(getOperandType(), );
@@ -67,8 +98,16 @@ class Parser{
 		// 	operands.push_front(newOp);
 
 		// }
+	private:
+		size_t lineNum;
 		std::list<Action> actions;
 		std::list<Lexem*> _lexems;
+		constexpr size_t N_OPS = 11;
+		constexpr size_t N_TYPES = 5;
+		const std::string validOps[N_OPS] = {"push", "pop", "dump", "assert", "add",
+							"sub", "mull", "div", "mod", "print", "exit"};
+		const std::string validTypes[N_TYPES] = {"int8", "int16", "int32", "float",
+							"double"};
 };
 
 #endif
