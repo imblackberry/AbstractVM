@@ -2,7 +2,7 @@
 #define LEXER_HPP
 #include <iostream>
 #include <fstream>
-#include <list>
+#include <vector>
 #include <regex>
 #define NOARGS 1
 #define INTEGER_VALUE "[-]?[0-9]+"
@@ -33,7 +33,7 @@ class Lexer{
 		Lexer const & operator=(Lexer const & other);
 		~Lexer();
 		void	makeLexems();
-		std::list<Lexem*> & getLexems() { return _lexems; }
+		std::vector<Lexem*> & getLexems() { return _lexems; }
 
 	private:
 		struct Parse{
@@ -46,7 +46,7 @@ class Lexer{
 		std::istream & _input;
 		Parse fullLine;
 		Parse onlyOpLine;
-		std::list<Lexem*> _lexems;
+		std::vector<Lexem*> _lexems;
 		bool _isStandardInput = false;
 };
 

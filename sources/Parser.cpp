@@ -1,17 +1,71 @@
 #include "Parser.hpp"
 
-Parser::Parser(std::list<Lexem*> & lexems):
+Parser::Parser(std::vector<Lexem*> & lexems):
 		_lexems(std::move(lexems))
 {
-	// actions[Push] = Parser::push;
-	// actions[Pop] = Parser::pop;
-	// actions[Dump] = Parser::dump;
-	// actions[Assert] = Parser::assert;
-	// actions[Add] = Parser::add;
-	// actions[Sub] = Parser::sub;
-	// actions[Mul] = Parser::mul;
-	// actions[Div] = Parser::div;
-	// actions[Mod] = Parser::mod;
-	// actions[Print] = Parser::print;
-	// actions[Exit] = Parser::exit;
+
+}
+
+bool Parser::nextCurrLexem() {
+	_currLexem++;
+	if (_currLexem >= static_cast<int>(_lexems.size()))
+		return false;
+	if (_lexems[_currLexem]->type == eLexemType::Operation)
+		_currLine++;
+	return true;
+}
+Lexem * Parser::getCurrLexem() { return _lexems[_currLexem]; }
+
+bool Parser::hasOperand(const eOperation operation){
+	if (operation == Push || operation == Assert)
+		return true;
+	return false;
+}
+eOperation Parser::getOperation() {
+	Lexem * lexem = getCurrLexem();
+	if (lexem->type == eLexemType::Operation) {
+		auto it = std::find_if(validOps.begin(), validOps.end(), [&lexem](std::string op){
+			return op == lexem->capacity ? true : false;
+		});
+		if (it != validOps.end())
+			return static_cast<eOperation>(it - validOps.begin());
+	}
+	return eOperation::N_OPS; //todo: exc
+}
+
+enum eOperandType Parser::getOperandType() {
+	nextCurrLexem();
+	Lexem * lexem = getCurrLexem();
+	if (lexem->type == eLexemType::eOperandType) {
+		auto it = std::find_if(validTypes.begin(), validTypes.end(), [&lexem](std::string op){
+			return op == lexem->capacity ? true : false;
+		});
+		if (it != validTypes.end())
+			return static_cast<enum eOperandType>(it - validTypes.begin());
+	}
+	return static_cast<enum eOperandType>(0); //todo: exc
+}
+
+const IOperand * Parser::getOperand() {
+	OperandFactory factory;
+	enum eOperandType type = getOperandType();
+	nextCurrLexem();
+	Lexem * operandLexem = getCurrLexem();
+	if (operandLexem->type == Value)
+		return factory.createOperand(type, operandLexem->capacity);
+	return nullptr;
+}
+
+void Parser::addAction(){
+	eOperation operation = getOperation();
+	const IOperand * operand = nullptr;
+	if (hasOperand(operation))
+		operand = getOperand();
+	actions.push_back({operation, operand});
+	
+	
+}
+void Parser::run(){
+	while (nextCurrLexem())
+		addAction();
 }
