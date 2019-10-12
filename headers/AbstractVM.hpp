@@ -2,7 +2,7 @@
 #define ABSTRACTVM_HPP
 #include <iostream>
 #include <deque>
-#include "Lexer.hpp"
+#include "Parser.hpp"
 #include "IOperand.hpp"
 #define NO_ARGS 1
 	// actions[Push] = Parser::push;
@@ -18,12 +18,14 @@
 	// actions[Exit] = Parser::exit;
 class AbstractVM{
 	public:
-		AbstractVM() : lexer(std::cin) { } //TODO: read from file
-		~AbstractVM() {}
+		AbstractVM();//TODO: read from file
+		~AbstractVM();
+		AbstractVM(const AbstractVM & other);
+		AbstractVM const & operator=(AbstractVM const & other);
 		void run(std::string fileName = std::string());
 	private:
-		Lexer lexer;
-		//Parser parser;
+		std::unique_ptr<Lexer> _lexer;
+		std::unique_ptr<Parser> _parser;
 		std::deque<IOperand*> _operands;
 
 };

@@ -13,7 +13,8 @@ enum eLexemType{
 	Operation, //0
 	eOperandType, //1
 	Value, //2
-	NN //3
+	NN, //3
+	Comment = NN
 };
 
 struct Lexem
@@ -28,24 +29,27 @@ struct Lexem
 class Lexer{
 	public:
 		Lexer();
-		Lexer(std::istream & input = std::cin);
+		~Lexer();
+		Lexer(std::istream &input = std::cin);// ?
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
-		~Lexer();
 		void	makeLexems();
-		std::vector<Lexem*> & getLexems() { return _lexems; }
+		std::vector<Lexem*> & getLexems();
 
 	private:
 		struct Parse{
 			std::string expression;
 			std::vector<eLexemType> lexemTypes;//vector?
+			Parse const & operator=(Parse const & other);
 		};
+		void init();
 		Lexem * makeOperation(std::string & str);
 		bool addLexem(eLexemType lexemType, std::string token);
 		bool checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
+		bool isEnd(eLexemType type, std::string const str);
 		std::istream & _input;
-		Parse fullLine;
-		Parse onlyOpLine;
+		Parse _fullLine;
+		Parse _onlyOpLine;
 		std::vector<Lexem*> _lexems;
 		bool _isStandardInput = false;
 };

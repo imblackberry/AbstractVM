@@ -20,34 +20,34 @@ enum eOperation{
 	Mod,
 	Print,
 	Exit,
+	ExitSpec,
 	N_OPS
 };
 
 class Action {
 	public:
-		Action(){};
-		Action(eOperation operation, const IOperand * operand) : 
-			_operation(operation), _operand(operand){};
-		Action(const Action & other){ (void)other; };
+		Action();
+		~Action();
+		Action(eOperation operation, const IOperand * operand);
+		Action(const Action & other);
 		Action const & operator=(Action const & other);
-		~Action(){};
 
 		void run(){};
-	private:
+	//private:
 		eOperation _operation;
 		const IOperand * _operand;
 };
 
 class Parser{
 	public:
-		Parser() {};
+		Parser();
+		~Parser();
 		Parser(std::vector<Lexem*> & lexems);
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
-		~Parser(){}
-	
-	private:
+		void run();
 
+	private:
 		bool nextCurrLexem();
 		Lexem * getCurrLexem();
 		bool hasOperand(const eOperation operation);
@@ -55,7 +55,6 @@ class Parser{
 		enum eOperandType getOperandType();
 		const IOperand * getOperand();
 		void addAction();
-		void run();
 		// void push(void) {
 		// 	//OperandFactory factory;
 		// 	//factory.createOperand(getOperandType(), );
@@ -86,7 +85,7 @@ class Parser{
 		std::vector<Lexem*> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",
-							"sub", "mull", "div", "mod", "print", "exit"} };
+							"sub", "mull", "div", "mod", "print", "exit", ";;"} };
 		const std::array<std::string, N_TYPES> validTypes = { { "int8", "int16", "int32", "float",
 							"double"} };
 };

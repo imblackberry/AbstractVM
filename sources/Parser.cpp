@@ -1,9 +1,38 @@
 #include "Parser.hpp"
 
+Action::Action() {};
+Action::~Action() {};
+
+Action::Action(eOperation operation, const IOperand * operand) :
+			_operation(operation), _operand(operand){};
+
+Action::Action(const Action & other){ *this = other; };
+
+Action const & Action::operator=(Action const & other) {
+	if (this != & other) {
+		_operation = other._operation;
+		_operand = other._operand;
+	}
+	return *this;
+}
+
+Parser::Parser() {};
+Parser::~Parser() {};
+
 Parser::Parser(std::vector<Lexem*> & lexems):
 		_lexems(std::move(lexems))
-{
+{ }
 
+Parser::Parser(const Parser & other) { *this = other; }
+
+Parser const & Parser::operator=(Parser const & other) {
+	if (this != &other) {
+		_currLexem = other._currLexem;
+		_currLine = other._currLine;
+		actions = other.actions;
+		_lexems = other._lexems;
+	}
+	return *this;
 }
 
 bool Parser::nextCurrLexem() {
@@ -62,10 +91,20 @@ void Parser::addAction(){
 	if (hasOperand(operation))
 		operand = getOperand();
 	actions.push_back({operation, operand});
-	
-	
+
 }
 void Parser::run(){
-	while (nextCurrLexem())
+	while (nextCurrLexem()) {
+		std::cout << "----------------" << std::endl;
 		addAction();
+
+		for (auto ac: actions){
+			std::cout << "ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << std::endl;
+			if (ac._operand) {
+				std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << std::endl;
+				std::cout << "ac._operand = " << ac._operand->toString() << std::endl;
+			}
+		}
+		std::cout << "----------------" << std::endl;
+	}
 }
