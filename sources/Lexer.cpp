@@ -74,7 +74,7 @@ void Lexer::init() {
 				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
 	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, NN};
 	_fullLine = {allLexemTypesParse, allLexemTypes};
-	const std::string onlyOpLexemParse("([a-z]+)[ \f\r\t\v]*(.*)");
+	const std::string onlyOpLexemParse("([a-z;;]+)[ \f\r\t\v]*(.*)");
 	std::vector<eLexemType> onlyOpLexemTypes = {Operation, NN};
 	_onlyOpLine = {onlyOpLexemParse, onlyOpLexemTypes};
 }
