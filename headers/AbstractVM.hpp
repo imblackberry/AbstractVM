@@ -7,6 +7,7 @@
 #include "Exception.hpp"
 #define NO_ARGS 1
 //TODO
+//author file???
 //Exceptions (over, under)
 //norm from file
 //lexer comments
