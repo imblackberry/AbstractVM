@@ -34,7 +34,7 @@ class Action {
 		Action const & operator=(Action const & other);
 
 		void run(){};
-	//private:
+	//private: todo
 		eOperation _operation;
 		const IOperand * _operand;
 };
@@ -57,29 +57,6 @@ class Parser{
 		enum eOperandType getOperandType();
 		const IOperand * getOperand();
 		void addAction();
-		// void push(void) {
-		// 	//OperandFactory factory;
-		// 	//factory.createOperand(getOperandType(), );
-		// }
-		// void pop(void) {
-		// 	operands.pop_front();
-		// }
-		// void dump(void) {
-		// 	for (auto operand : operands)
-		// 		std::cout << operand->toString() << std::endl;
-		// }
-		// // void assert(void) {}
-		// void add(void) {
-		// 	if (operands.size() < MIN_SIZE_FOR_MATH_OP)
-		// 		std::cout << "error" << std::endl; //todo exception
-		// 	IOperand const * a = operands[0];
-		// 	operands.pop_front();
-		// 	IOperand const * b = operands[0];
-		// 	operands.pop_front();
-		// 	IOperand const * newOp = *a + *b;
-		// 	operands.push_front(newOp);
-
-		// }
 	private:
 		int _currLexem = -1;
 		int _currLine = -1;

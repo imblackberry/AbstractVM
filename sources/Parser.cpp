@@ -98,18 +98,17 @@ void Parser::addAction(){
 }
 void Parser::run(){
 	while (nextCurrLexem()) {
-		std::cout << "----------------" << std::endl;
 		addAction();
-
-		for (auto ac: actions){
-			std::cout << "ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << std::endl;
-			if (ac._operand) {
-				std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << std::endl;
-				std::cout << "ac._operand = " << ac._operand->toString() << std::endl;
-			}
-		}
-		std::cout << "----------------" << std::endl;
 	}
+	std::cout << "----------------" << std::endl;
+	for (auto ac: actions){
+		std::cout << "\n ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << "	";
+		if (ac._operand) {
+			std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << "	";
+			std::cout << "ac._operand = " << ac._operand->toString();
+		}
+	}
+	std::cout << "----------------" << std::endl;
 }
 
 std::list<Action> & Parser::getActions() { return actions; }

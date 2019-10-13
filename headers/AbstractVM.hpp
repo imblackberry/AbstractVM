@@ -6,6 +6,11 @@
 #include "IOperand.hpp"
 #include "Exception.hpp"
 #define NO_ARGS 1
+//TODO
+//Exceptions (over, under)
+//norm from file
+//lexer comments
+//exit (Exception, need command?)
 
 class AbstractVM{
 	typedef void (AbstractVM::*DoOperation)(const IOperand*);
@@ -28,6 +33,7 @@ class AbstractVM{
 		void div(const IOperand*);
 		void mod(const IOperand*);
 		void print(const IOperand*);//todo
+		void exit(const IOperand*);
 		void preArithmeticOp();
 
 		std::unique_ptr<Lexer> _lexer;

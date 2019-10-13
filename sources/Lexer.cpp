@@ -70,11 +70,11 @@ bool	Lexer::addLexem(eLexemType lexemType, std::string token){
 }
 
 void Lexer::init() {
-	const std::string allLexemTypesParse(std::string("([a-z;;]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
+	const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
 				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
 	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, NN};
 	_fullLine = {allLexemTypesParse, allLexemTypes};
-	const std::string onlyOpLexemParse("([a-z;;]+)[ \f\r\t\v]*(.*)");
+	const std::string onlyOpLexemParse("([a-z;]+)[ \f\r\t\v]*(.*)");//todo ;/\n?
 	std::vector<eLexemType> onlyOpLexemTypes = {Operation, NN};
 	_onlyOpLine = {onlyOpLexemParse, onlyOpLexemTypes};
 }
