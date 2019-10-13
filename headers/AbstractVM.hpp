@@ -15,13 +15,6 @@ class AbstractVM{
 		AbstractVM(const AbstractVM & other);
 		AbstractVM const & operator=(AbstractVM const & other);
 
-		class stack_error : public std::length_error
-		{
-			public:
-				stack_error(const char *);
-				virtual ~stack_error(void) throw();
-		};
-
 		void run(std::string fileName = std::string());
 	private:
 		void runActions(std::list<Action> & actions);
