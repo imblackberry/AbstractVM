@@ -17,7 +17,10 @@ Action const & Action::operator=(Action const & other) {
 }
 
 Parser::Parser() {};
-Parser::~Parser() {};
+Parser::~Parser() {
+	for (auto lexem : _lexems)
+		delete lexem;
+};
 
 Parser::Parser(std::vector<Lexem*> & lexems):
 		_lexems(std::move(lexems))

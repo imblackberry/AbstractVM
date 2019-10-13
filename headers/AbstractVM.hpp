@@ -27,7 +27,7 @@ class AbstractVM{
 		void mul(const IOperand*);
 		void div(const IOperand*);
 		void mod(const IOperand*);
-		void print(const IOperand*);
+		void print(const IOperand*);//todo
 		void preArithmeticOp();
 
 		std::unique_ptr<Lexer> _lexer;

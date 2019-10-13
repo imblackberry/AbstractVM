@@ -10,9 +10,12 @@ AbstractVM::AbstractVM() {
 	operationsMap[Div] = &AbstractVM::div;
 	operationsMap[Mod] = &AbstractVM::mod;
 	operationsMap[Print] = &AbstractVM::print;
-	// operationsMap[Exit] = &AbstractVM::exit;
+	//operationsMap[Exit] = &AbstractVM::exit;
 };
-AbstractVM::~AbstractVM() {};
+AbstractVM::~AbstractVM() {
+	for (auto op :_operands)
+		delete op;
+};
 
 AbstractVM::AbstractVM(const AbstractVM & other){ *this = other; };
 
@@ -82,16 +85,22 @@ void AbstractVM::assertF(const IOperand* operand) {
 void AbstractVM::add(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 + *_tmpOp2);
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::sub(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 - *_tmpOp2);
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::mul(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 * *_tmpOp2);
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::div(const IOperand*) {
@@ -99,6 +108,8 @@ void AbstractVM::div(const IOperand*) {
 	if (_tmpOp2->toString() == "0")
 		throw Exception("division by 0");
 	_operands.push_front(*_tmpOp1 / *_tmpOp2);
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::mod(const IOperand*) {
@@ -106,15 +117,19 @@ void AbstractVM::mod(const IOperand*) {
 	if (_tmpOp2->toString() == "0")
 		throw Exception("modulo by 0");
 	_operands.push_front(*_tmpOp1 % *_tmpOp2);
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::print(const IOperand*) {
 	if (_operands.empty())
 		throw Exception("stack is empty");
-	IOperand const * op = this->_stack.front();
+	IOperand const * op = this->_operands.front();
 	if (op->getType() != eOperandType::Int8)
 		throw Exception("operand with type int8 required");
-	
+	std::cout << static_cast<char>(std::stoi(op->toString())) << std::endl;
+	delete _tmpOp1;
+	delete _tmpOp2;
 }
 
 void AbstractVM::preArithmeticOp() {
