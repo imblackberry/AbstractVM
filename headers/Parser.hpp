@@ -5,6 +5,7 @@
 #include "Lexer.hpp"
 #include "IOperand.hpp"
 #include "OperandFactory.hpp"
+#include "Exception.hpp"
 #define MIN_SIZE_FOR_MATH_OP 2
 
 
@@ -46,6 +47,7 @@ class Parser{
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		void run();
+		std::list<Action> & getActions();
 
 	private:
 		bool nextCurrLexem();
@@ -85,7 +87,7 @@ class Parser{
 		std::vector<Lexem*> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",
-							"sub", "mull", "div", "mod", "print", "exit", ";;"} };
+							"sub", "mul", "div", "mod", "print", "exit", ";;"} };
 		const std::array<std::string, N_TYPES> validTypes = { { "int8", "int16", "int32", "float",
 							"double"} };
 };

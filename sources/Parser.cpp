@@ -59,7 +59,7 @@ eOperation Parser::getOperation() {
 		if (it != validOps.end())
 			return static_cast<eOperation>(it - validOps.begin());
 	}
-	return eOperation::N_OPS; //todo: exc
+	throw Exception("an instruction is unknown");
 }
 
 enum eOperandType Parser::getOperandType() {
@@ -72,7 +72,7 @@ enum eOperandType Parser::getOperandType() {
 		if (it != validTypes.end())
 			return static_cast<enum eOperandType>(it - validTypes.begin());
 	}
-	return static_cast<enum eOperandType>(0); //todo: exc
+	throw Exception("a value type is unknown");
 }
 
 const IOperand * Parser::getOperand() {
@@ -108,3 +108,5 @@ void Parser::run(){
 		std::cout << "----------------" << std::endl;
 	}
 }
+
+std::list<Action> & Parser::getActions() { return actions; }

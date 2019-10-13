@@ -23,8 +23,7 @@ OperandFactory::~OperandFactory(){
 }
 
 IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-	CreateFunctions f;
-	f = _factory.at(type);
+	CreateFunctions f = _factory.at(type);
 	return (this->*f)(value);
 }
 
