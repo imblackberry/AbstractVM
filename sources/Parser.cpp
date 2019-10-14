@@ -22,6 +22,17 @@ Parser::~Parser() {
 	for (auto lexem : _lexems){
 		delete lexem;
 	}
+	// for (auto ac : actions){
+	// 	(void)ac._operand;
+	// 	std::cout << "DESTRUCTOR" << std::endl;
+	// 	std::cout << "\n ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << "	";
+	// 	if (ac._operand) {
+	// 		std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << "	";
+	// 		std::cout << "ac._operand = " << ac._operand->toString();
+	// 	}
+	// 	if (ac._operand)
+	// 	delete ac._operand;
+	// }
 };
 
 Parser::Parser(std::vector<Lexem*> & lexems):

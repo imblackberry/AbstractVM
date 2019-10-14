@@ -53,6 +53,8 @@ void AbstractVM::runActions(const std::list<Action> & actions) {
 	for (auto ac : actions) {
 		auto doOperation = operationsMap[ac._operation];
 		(this->*doOperation)(ac._operand);
+		_tmpOp1 = nullptr;
+		_tmpOp1 = nullptr;
 	}
 }
 
@@ -81,32 +83,26 @@ void AbstractVM::assertF(const IOperand* operand) {
 		if (operand->getType() != _operands.front()->getType() ||
 				operand->toString() != _operands.front()->toString())
 		{
-			//delete operand;
+			delete operand;
 			throw Exception("assertion is failed");
 		}
-		//delete operand;
+		delete operand;
 	}
 }
 
 void AbstractVM::add(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 + *_tmpOp2);
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::sub(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 - *_tmpOp2);
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::mul(const IOperand*) {
 	preArithmeticOp();
 	_operands.push_front(*_tmpOp1 * *_tmpOp2);
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::div(const IOperand*) {
@@ -114,8 +110,6 @@ void AbstractVM::div(const IOperand*) {
 	if (_tmpOp2->toString() == "0")
 		throw Exception("division by 0");
 	_operands.push_front(*_tmpOp1 / *_tmpOp2);
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::mod(const IOperand*) {
@@ -123,8 +117,6 @@ void AbstractVM::mod(const IOperand*) {
 	if (_tmpOp2->toString() == "0")
 		throw Exception("modulo by 0");
 	_operands.push_front(*_tmpOp1 % *_tmpOp2);
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::print(const IOperand*) {
@@ -134,8 +126,6 @@ void AbstractVM::print(const IOperand*) {
 	if (op->getType() != eOperandType::Int8)
 		throw Exception("operand with type int8 required");
 	std::cout << static_cast<char>(std::stoi(op->toString())) << std::endl;
-	delete _tmpOp1;
-	delete _tmpOp2;
 }
 
 void AbstractVM::exit(const IOperand*) {
@@ -145,8 +135,8 @@ void AbstractVM::exit(const IOperand*) {
 void AbstractVM::preArithmeticOp() {
 	if (_operands.size() < MIN_SIZE_FOR_MATH_OP)
 		throw Exception("stack is too small");
-	_tmpOp1 = _operands.front();
+	_tmpOp1.reset(_operands.front());
 	_operands.pop_front();
-	_tmpOp2 = _operands.front();
+	_tmpOp2.reset(_operands.front());
 	_operands.pop_front();
 }
