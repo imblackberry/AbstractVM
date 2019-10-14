@@ -16,6 +16,10 @@ AbstractVM::~AbstractVM() {
 	for (auto op :_operands) {
 		delete op;
 	}
+// if (_parser) {
+// 	for (auto ac : _parser->getActions())
+// 		delete ac._operand;
+// }
 };
 
 AbstractVM::AbstractVM(const AbstractVM & other){ *this = other; };
@@ -45,7 +49,7 @@ void AbstractVM::run(std::string fileName)
 		file.close();
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
-	const auto & acs = _parser->getActions();
+	const auto & acs = _parser->actions;
 	runActions(acs);
 }
 
@@ -53,8 +57,6 @@ void AbstractVM::runActions(const std::list<Action> & actions) {
 	for (auto ac : actions) {
 		auto doOperation = operationsMap[ac._operation];
 		(this->*doOperation)(ac._operand);
-		_tmpOp1 = nullptr;
-		_tmpOp1 = nullptr;
 	}
 }
 

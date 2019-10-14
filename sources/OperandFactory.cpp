@@ -22,14 +22,9 @@ OperandFactory::~OperandFactory(){
 
 }
 
-IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const{
-//	try {
+IOperand const * OperandFactory::createOperand(eOperandType type, std::string const & value ) const {
 	CreateFunctions f = _factory.at(type);
 	return (this->*f)(value);
-//	} catch (const std::exception & e){
-//		std::cout << e.what() << std::endl;
-//	}
-//	return nullptr;
 }
 
 IOperand const * OperandFactory::createInt8(std::string const & value) const{

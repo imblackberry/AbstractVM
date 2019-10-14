@@ -4,10 +4,7 @@ Lexer::Lexer() : _input(std::cin){
 	_isStandardInput = true;
 }
 
-Lexer::~Lexer(){
-	for (auto lexem : _lexems)
-		delete lexem;
-}
+Lexer::~Lexer(){}
 
 Lexer::Lexer(std::istream & input) : _input(input){
 	init();
@@ -33,7 +30,7 @@ Lexer const & Lexer::operator=(Lexer const & other) {
 		//_input = std::move(other._input);
 		_fullLine = other._fullLine;
 		_onlyOpLine = other._onlyOpLine;
-		_lexems = other._lexems;
+		//_lexems = other._lexems;
 		_isStandardInput = other._isStandardInput;
 	}
 	return *this;
@@ -60,7 +57,7 @@ void	Lexer::makeLexems(){
 	}
 }
 
-std::vector<Lexem*> & Lexer::getLexems() { return _lexems; }
+std::vector<Lexem> & Lexer::getLexems() { return _lexems; }
 
 bool	Lexer::addLexem(eLexemType lexemType, std::string token){
 	if (lexemType == Comment)
@@ -71,7 +68,7 @@ bool	Lexer::addLexem(eLexemType lexemType, std::string token){
 			throw Exception("lexical");
 	}
 	if (lexemType < NN)
-		_lexems.push_back(new Lexem(lexemType, token)); //todo [Х] leaks
+		_lexems.push_back({lexemType, token});
 	return true;
 }
 

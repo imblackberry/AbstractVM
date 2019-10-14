@@ -42,15 +42,16 @@ class Parser{
 	public:
 		Parser();
 		~Parser();
-		Parser(std::vector<Lexem*> & lexems);
+		Parser(std::vector<Lexem> & lexems);
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		void run();
 		const std::list<Action> & getActions();
+		std::list<Action> actions;
 
 	private:
 		bool nextCurrLexem();
-		Lexem * getCurrLexem();
+		Lexem getCurrLexem();
 		bool hasOperand(const eOperation operation);
 		enum eOperation getOperation();
 		enum eOperandType getOperandType();
@@ -58,8 +59,7 @@ class Parser{
 		void addAction();
 	private:
 		int _currLexem = -1;
-		std::list<Action> actions;
-		std::vector<Lexem*> _lexems;
+		std::vector<Lexem> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",
 							"sub", "mul", "div", "mod", "print", "exit"} };

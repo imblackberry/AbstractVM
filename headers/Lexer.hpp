@@ -34,7 +34,7 @@ class Lexer{
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		void	makeLexems();
-		std::vector<Lexem*> & getLexems();
+		std::vector<Lexem> & getLexems();
 
 	private:
 		struct Parse{
@@ -43,7 +43,7 @@ class Lexer{
 			Parse const & operator=(Parse const & other);
 		};
 		void init();
-		Lexem * makeOperation(std::string & str);
+		Lexem makeOperation(std::string & str);
 		bool addLexem(eLexemType lexemType, std::string token);
 		bool checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
 		bool isEnd(const std::string token);
@@ -52,7 +52,7 @@ class Lexer{
 		std::istream & _input;
 		Parse _fullLine;
 		Parse _onlyOpLine;
-		std::vector<Lexem*> _lexems;
+		std::vector<Lexem> _lexems;
 		bool _isStandardInput;
 };
 

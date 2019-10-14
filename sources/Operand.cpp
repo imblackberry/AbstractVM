@@ -108,10 +108,9 @@ IOperand const *	Operand<T>::operator%(IOperand const & rhs) const{
 // --------------------------------------------------------------------------//
 // 								5 CLASS DECLARATION							 //
 // --------------------------------------------------------------------------//
-// explicit instantiations
+
 template class Operand<int8_t>;
 template class Operand<int16_t>;
 template class Operand<int32_t>;
 template class Operand<float>;
 template class Operand<double>;
-//I will only be able to use Operand with this 5 types

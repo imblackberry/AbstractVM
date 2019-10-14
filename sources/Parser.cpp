@@ -1,11 +1,10 @@
 #include "Parser.hpp"
 
-Action::Action() {};
-Action::~Action() {
-};
+Action::Action() : _operation(eOperation::N_OPS), _operand(nullptr) {};
+Action::~Action() {};
 
 Action::Action(eOperation operation, const IOperand * operand) :
-			_operation(operation), _operand(operand){};
+	_operation(operation), _operand(operand){};
 
 Action::Action(const Action & other){ *this = other; };
 
@@ -19,9 +18,6 @@ Action const & Action::operator=(Action const & other) {
 
 Parser::Parser() {};
 Parser::~Parser() {
-	for (auto lexem : _lexems){
-		delete lexem;
-	}
 	// for (auto ac : actions){
 	// 	(void)ac._operand;
 	// 	std::cout << "DESTRUCTOR" << std::endl;
@@ -35,7 +31,7 @@ Parser::~Parser() {
 	// }
 };
 
-Parser::Parser(std::vector<Lexem*> & lexems):
+Parser::Parser(std::vector<Lexem> & lexems):
 		_lexems(std::move(lexems))
 { }
 
@@ -45,7 +41,7 @@ Parser const & Parser::operator=(Parser const & other) {
 	if (this != &other) {
 		_currLexem = other._currLexem;
 		actions = other.actions;
-		_lexems = other._lexems;
+		//_lexems = other._lexems;
 	}
 	return *this;
 }
@@ -56,7 +52,7 @@ bool Parser::nextCurrLexem() {
 		return false;
 	return true;
 }
-Lexem * Parser::getCurrLexem() { return _lexems[_currLexem]; }
+Lexem Parser::getCurrLexem() { return _lexems[_currLexem]; }
 
 bool Parser::hasOperand(const eOperation operation){
 	if (operation == Push || operation == Assert)
@@ -64,10 +60,10 @@ bool Parser::hasOperand(const eOperation operation){
 	return false;
 }
 enum eOperation Parser::getOperation() {
-	Lexem * lexem = getCurrLexem();
-	if (lexem->type == eLexemType::Operation) {
+	Lexem lexem = getCurrLexem();
+	if (lexem.type == eLexemType::Operation) {
 		auto it = std::find_if(validOps.begin(), validOps.end(), [&lexem](std::string op){
-			return op == lexem->capacity ? true : false;
+			return op == lexem.capacity ? true : false;
 		});
 		if (it != validOps.end())
 			return static_cast<eOperation>(it - validOps.begin());
@@ -77,10 +73,10 @@ enum eOperation Parser::getOperation() {
 
 enum eOperandType Parser::getOperandType() {
 	nextCurrLexem();
-	Lexem * lexem = getCurrLexem();
-	if (lexem->type == eLexemType::eOperandType) {
+	Lexem lexem = getCurrLexem();
+	if (lexem.type == eLexemType::eOperandType) {
 		auto it = std::find_if(validTypes.begin(), validTypes.end(), [&lexem](std::string op){
-			return op == lexem->capacity ? true : false;
+			return op == lexem.capacity ? true : false;
 		});
 		if (it != validTypes.end())
 			return static_cast<enum eOperandType>(it - validTypes.begin());
@@ -92,9 +88,9 @@ const IOperand * Parser::getOperand() {
 	OperandFactory factory;
 	enum eOperandType type = getOperandType();
 	nextCurrLexem();
-	Lexem * operandLexem = getCurrLexem();
-	if (operandLexem->type == Value)
-		return factory.createOperand(type, operandLexem->capacity);
+	Lexem operandLexem = getCurrLexem();
+	if (operandLexem.type == Value)
+		return factory.createOperand(type, operandLexem.capacity);
 	return nullptr;
 }
 
