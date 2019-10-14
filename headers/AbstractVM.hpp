@@ -9,8 +9,6 @@
 //TODO
 //author file???
 //Exceptions (over, under)
-//norm from file
-//lexer comments
 //exit (Exception, need command?)
 
 class AbstractVM{

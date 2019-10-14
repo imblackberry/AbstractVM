@@ -2,7 +2,8 @@
 #define EXCEPTION_HPP
 #include <iostream>
 #include <exception>
-
+#define RED_BOLD "\033[1;31m"
+#define END_STYLE "\033[0m"
 class Exception : public std::exception
 {
 	public:

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "AbstractVM.hpp"
+#include "Exception.hpp"
 void foo(int ac, char **av){
 
 	AbstractVM vm;
@@ -8,12 +9,12 @@ void foo(int ac, char **av){
 			vm.run();
 		else
 		{
-			for (int i = 0; i < ac; i++)
+			for (int i = 1; i < ac; i++)
 				vm.run(av[i]);
 		}
 	} catch (const std::exception &e) {
-		std::cout << "Error: " << e.what() << std::endl;
-	}
+		std::cout << RED_BOLD << "Error" << END_STYLE << ": " << e.what() << std::endl;
+	} 
 }
 int main(int ac, char **av){
 

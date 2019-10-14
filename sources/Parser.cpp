@@ -53,7 +53,7 @@ bool Parser::hasOperand(const eOperation operation){
 		return true;
 	return false;
 }
-eOperation Parser::getOperation() {
+enum eOperation Parser::getOperation() {
 	Lexem * lexem = getCurrLexem();
 	if (lexem->type == eLexemType::Operation) {
 		auto it = std::find_if(validOps.begin(), validOps.end(), [&lexem](std::string op){
@@ -100,7 +100,6 @@ void Parser::run(){
 	while (nextCurrLexem()) {
 		addAction();
 	}
-	std::cout << "----------------" << std::endl;
 	for (auto ac: actions){
 		std::cout << "\n ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << "	";
 		if (ac._operand) {
@@ -108,7 +107,6 @@ void Parser::run(){
 			std::cout << "ac._operand = " << ac._operand->toString();
 		}
 	}
-	std::cout << "----------------" << std::endl;
 }
 
 std::list<Action> & Parser::getActions() { return actions; }

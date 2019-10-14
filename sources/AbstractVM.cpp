@@ -10,7 +10,7 @@ AbstractVM::AbstractVM() {
 	operationsMap[Div] = &AbstractVM::div;
 	operationsMap[Mod] = &AbstractVM::mod;
 	operationsMap[Print] = &AbstractVM::print;
-	//operationsMap[Exit] = &AbstractVM::exit;
+	operationsMap[Exit] = &AbstractVM::exit;
 };
 AbstractVM::~AbstractVM() {
 	for (auto op :_operands)
@@ -29,14 +29,19 @@ AbstractVM const & AbstractVM::operator=(AbstractVM const & other) {
 }
 void AbstractVM::run(std::string fileName)
 {
+    std::ifstream file;
     if (fileName != "")
     {
-        std::ifstream file(fileName);
+		file.open(fileName);
+		if (!file)
+			throw Exception("unable to open file " + fileName);
         _lexer = std::make_unique<Lexer>(file);
     }
     else
-        _lexer = std::make_unique<Lexer>(std::cin);
+        _lexer = std::make_unique<Lexer>();
     _lexer->makeLexems();
+	if (file)
+		file.close();
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
 	runActions(_parser->getActions());
@@ -70,16 +75,15 @@ void AbstractVM::dump(const IOperand*) {
 void AbstractVM::assertF(const IOperand* operand) {
 	if (_operands.empty())
 		throw Exception("stack is empty");
-		if (operand)
+	if (operand) {
+		if (operand->getType() != _operands.front()->getType() ||
+				operand->toString() != _operands.front()->toString())
 		{
-			if (operand->getType() != _operands.front()->getType() ||
-					operand->toString() != _operands.front()->toString())
-			{
-				delete operand;
-				throw Exception("assertion is failed");
-			}
 			delete operand;
+			throw Exception("assertion is failed");
 		}
+		delete operand;
+	}
 }
 
 void AbstractVM::add(const IOperand*) {
@@ -130,6 +134,10 @@ void AbstractVM::print(const IOperand*) {
 	std::cout << static_cast<char>(std::stoi(op->toString())) << std::endl;
 	delete _tmpOp1;
 	delete _tmpOp2;
+}
+
+void AbstractVM::exit(const IOperand*) {
+	
 }
 
 void AbstractVM::preArithmeticOp() {

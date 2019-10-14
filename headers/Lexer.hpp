@@ -4,10 +4,10 @@
 #include <fstream>
 #include <vector>
 #include <regex>
+#include "Exception.hpp"
 #define NOARGS 1
 #define INTEGER_VALUE "[-]?[0-9]+"
 #define FRACTION_VALUE "[-]?[0-9]+.[0-9]+"
-#define COMMENT ";"
 
 enum eLexemType{
 	Operation, //0
@@ -30,7 +30,7 @@ class Lexer{
 	public:
 		Lexer();
 		~Lexer();
-		Lexer(std::istream &input = std::cin);// ?
+		Lexer(std::istream & input);// ?
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		void	makeLexems();
@@ -46,12 +46,14 @@ class Lexer{
 		Lexem * makeOperation(std::string & str);
 		bool addLexem(eLexemType lexemType, std::string token);
 		bool checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
-		bool isEnd(eLexemType type, std::string const str);
+		bool isEnd(const std::string token);
+		bool isCommentOrEmty(const std::string token);
+
 		std::istream & _input;
 		Parse _fullLine;
 		Parse _onlyOpLine;
 		std::vector<Lexem*> _lexems;
-		bool _isStandardInput = false;
+		bool _isStandardInput;
 };
 
 #endif

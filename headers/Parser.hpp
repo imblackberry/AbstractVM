@@ -21,7 +21,6 @@ enum eOperation{
 	Mod,
 	Print,
 	Exit,
-	ExitSpec,
 	N_OPS
 };
 
@@ -53,7 +52,7 @@ class Parser{
 		bool nextCurrLexem();
 		Lexem * getCurrLexem();
 		bool hasOperand(const eOperation operation);
-		eOperation getOperation();
+		enum eOperation getOperation();
 		enum eOperandType getOperandType();
 		const IOperand * getOperand();
 		void addAction();
@@ -64,7 +63,7 @@ class Parser{
 		std::vector<Lexem*> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",
-							"sub", "mul", "div", "mod", "print", "exit", ";;"} };
+							"sub", "mul", "div", "mod", "print", "exit"} };
 		const std::array<std::string, N_TYPES> validTypes = { { "int8", "int16", "int32", "float",
 							"double"} };
 };

@@ -4,7 +4,10 @@ Lexer::Lexer() : _input(std::cin){
 	_isStandardInput = true;
 }
 
-Lexer::~Lexer(){}
+Lexer::~Lexer(){
+	for (auto lexem : _lexems)
+		delete lexem;
+}
 
 Lexer::Lexer(std::istream & input) : _input(input){
 	init();
@@ -13,6 +16,16 @@ Lexer::Lexer(std::istream & input) : _input(input){
 
 Lexer::Lexer(const Lexer & other) : _input(other._input){
 	*this = other;
+}
+
+void Lexer::init() {
+	const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
+				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
+	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, Comment};
+	_fullLine = {allLexemTypesParse, allLexemTypes};
+	const std::string onlyOpLexemParse("([a-z]+)[ \f\r\t\v]*(.*)");
+	std::vector<eLexemType> onlyOpLexemTypes = {Operation, Comment};
+	_onlyOpLine = {onlyOpLexemParse, onlyOpLexemTypes};
 }
 
 Lexer const & Lexer::operator=(Lexer const & other) {
@@ -32,7 +45,9 @@ void	Lexer::makeLexems(){
 
 	for (size_t i = 0; std::getline(_input, line).eof() != true; i++) {
 		std::cout << i << " line == |" << line << "|" << std::endl;
-		if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
+		if (isEnd(line))
+			return ;
+		else if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
 			if (!checkAndAddLexems(tokensInLine, _fullLine.lexemTypes))
 				return ;
 		}
@@ -40,43 +55,24 @@ void	Lexer::makeLexems(){
 			if (!checkAndAddLexems(tokensInLine, _onlyOpLine.lexemTypes))
 				return ;
 		}
-		//todo else exception i + 1 line
+		else if (!isCommentOrEmty(line))
+			throw Exception("lexical");
 	}
 }
 
 std::vector<Lexem*> & Lexer::getLexems() { return _lexems; }
 
 bool	Lexer::addLexem(eLexemType lexemType, std::string token){
-	std::string exitOperaton = ";;";
-	// eLexemType lexemType = static_cast<eLexemType>(iType);
-
 	if (lexemType == Comment)
-	{ //todo NORM FUNCTION
-		if (token.empty()) //no comment
-			return true;
-		else if (_isStandardInput && token == exitOperaton) //end reading from standard input //todo: maybe add exit lexem
-			return false;
-		else if (token[0] == ';') // is comment
+	{
+		if (isCommentOrEmty(token))
 			return true;
 		else
-			return false; //todo exception
+			throw Exception("lexical");
 	}
-	if (isEnd(lexemType, token))
-		return false;
 	if (lexemType < NN)
 		_lexems.push_back(new Lexem(lexemType, token)); //todo [Х] leaks
 	return true;
-	// std::cout << "[" << i << "]" << tokensInLine[i].str() << std::endl;
-}
-
-void Lexer::init() {
-	const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
-				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
-	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, NN};
-	_fullLine = {allLexemTypesParse, allLexemTypes};
-	const std::string onlyOpLexemParse("([a-z;]+)[ \f\r\t\v]*(.*)");//todo ;/\n?
-	std::vector<eLexemType> onlyOpLexemTypes = {Operation, NN};
-	_onlyOpLine = {onlyOpLexemParse, onlyOpLexemTypes};
 }
 
 bool Lexer::checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes)
@@ -89,14 +85,15 @@ bool Lexer::checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType
 	return true;
 }
 
-bool Lexer::isEnd(eLexemType type, std::string const str) {
-	if (type == Operation)
-	{
-		if (_isStandardInput && str == ";;")
-			return true;
-		if (str == "exit") // maybe not cause EOF
-			return true;
-	}
+bool Lexer::isEnd(const std::string token) {
+	if (_isStandardInput && token == ";;")
+		return true;
+	return false;
+}
+
+bool Lexer::isCommentOrEmty(const std::string token) {
+	if (token.empty() || token[0] == ';')
+		return true;
 	return false;
 }
 
