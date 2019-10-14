@@ -21,7 +21,7 @@ class AbstractVM{
 
 		void run(std::string fileName = std::string());
 	private:
-		void runActions(std::list<Action> & actions);
+		void runActions(const std::list<Action> & actions);
 		void push(const IOperand* operand);
 		void pop(const IOperand*);
 		void dump(const IOperand*);

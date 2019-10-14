@@ -1,10 +1,19 @@
 #include "Operand.hpp"
+#include "Exception.hpp"
 template <class T>
 Operand<T>::Operand(){}
 
 template <class T>
+Operand<T>::~Operand(){}
+
+template <class T>
 Operand<T>::Operand(std::string str) {
-	T n = static_cast<T>(std::stod(str));
+	double tmp = std::stod(str);
+	if (tmp < std::numeric_limits<T>::min())
+		throw Exception("stack underflow");
+	else if (tmp > std::numeric_limits<T>::max())
+		throw Exception("stack overflow");
+	T n = static_cast<T>(tmp);
 	_strValue = DoubleToString(n);
 }
 

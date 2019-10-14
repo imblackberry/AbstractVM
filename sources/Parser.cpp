@@ -1,7 +1,8 @@
 #include "Parser.hpp"
 
 Action::Action() {};
-Action::~Action() {};
+Action::~Action() {
+};
 
 Action::Action(eOperation operation, const IOperand * operand) :
 			_operation(operation), _operand(operand){};
@@ -18,8 +19,9 @@ Action const & Action::operator=(Action const & other) {
 
 Parser::Parser() {};
 Parser::~Parser() {
-	for (auto lexem : _lexems)
+	for (auto lexem : _lexems){
 		delete lexem;
+	}
 };
 
 Parser::Parser(std::vector<Lexem*> & lexems):
@@ -31,7 +33,6 @@ Parser::Parser(const Parser & other) { *this = other; }
 Parser const & Parser::operator=(Parser const & other) {
 	if (this != &other) {
 		_currLexem = other._currLexem;
-		_currLine = other._currLine;
 		actions = other.actions;
 		_lexems = other._lexems;
 	}
@@ -42,8 +43,6 @@ bool Parser::nextCurrLexem() {
 	_currLexem++;
 	if (_currLexem >= static_cast<int>(_lexems.size()))
 		return false;
-	if (_lexems[_currLexem]->type == eLexemType::Operation)
-		_currLine++;
 	return true;
 }
 Lexem * Parser::getCurrLexem() { return _lexems[_currLexem]; }
@@ -109,4 +108,4 @@ void Parser::run(){
 	}
 }
 
-std::list<Action> & Parser::getActions() { return actions; }
+const std::list<Action> & Parser::getActions() { return actions; }

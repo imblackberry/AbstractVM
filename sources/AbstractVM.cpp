@@ -13,8 +13,9 @@ AbstractVM::AbstractVM() {
 	operationsMap[Exit] = &AbstractVM::exit;
 };
 AbstractVM::~AbstractVM() {
-	for (auto op :_operands)
+	for (auto op :_operands) {
 		delete op;
+	}
 };
 
 AbstractVM::AbstractVM(const AbstractVM & other){ *this = other; };
@@ -44,10 +45,11 @@ void AbstractVM::run(std::string fileName)
 		file.close();
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
-	runActions(_parser->getActions());
+	const auto & acs = _parser->getActions();
+	runActions(acs);
 }
 
-void AbstractVM::runActions(std::list<Action> & actions) {
+void AbstractVM::runActions(const std::list<Action> & actions) {
 	for (auto ac : actions) {
 		auto doOperation = operationsMap[ac._operation];
 		(this->*doOperation)(ac._operand);
@@ -79,10 +81,10 @@ void AbstractVM::assertF(const IOperand* operand) {
 		if (operand->getType() != _operands.front()->getType() ||
 				operand->toString() != _operands.front()->toString())
 		{
-			delete operand;
+			//delete operand;
 			throw Exception("assertion is failed");
 		}
-		delete operand;
+		//delete operand;
 	}
 }
 

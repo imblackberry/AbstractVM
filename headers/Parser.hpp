@@ -46,7 +46,7 @@ class Parser{
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		void run();
-		std::list<Action> & getActions();
+		const std::list<Action> & getActions();
 
 	private:
 		bool nextCurrLexem();
@@ -58,7 +58,6 @@ class Parser{
 		void addAction();
 	private:
 		int _currLexem = -1;
-		int _currLine = -1;
 		std::list<Action> actions;
 		std::vector<Lexem*> _lexems;
 		static constexpr size_t N_TYPES = 5;
