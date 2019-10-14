@@ -26,8 +26,8 @@ Parser::~Parser() {
 	// 		std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << "	";
 	// 		std::cout << "ac._operand = " << ac._operand->toString();
 	// 	}
-	// 	if (ac._operand)
-	// 	delete ac._operand;
+	 	// if (ac._operand)
+			// delete ac._operand;
 	// }
 };
 
@@ -41,7 +41,7 @@ Parser const & Parser::operator=(Parser const & other) {
 	if (this != &other) {
 		_currLexem = other._currLexem;
 		actions = other.actions;
-		//_lexems = other._lexems;
+		_lexems = other._lexems;
 	}
 	return *this;
 }

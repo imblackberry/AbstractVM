@@ -13,12 +13,12 @@ AbstractVM::AbstractVM() {
 	operationsMap[Exit] = &AbstractVM::exit;
 };
 AbstractVM::~AbstractVM() {
-	for (auto op :_operands) {
-		delete op;
-	}
+	// for (auto op :_operands) {
+	// 	delete op;
+	// }
 // if (_parser) {
-// 	for (auto ac : _parser->getActions())
-// 		delete ac._operand;
+	// for (auto ac : _parser->getActions())
+		// delete ac._operand;
 // }
 };
 
@@ -49,8 +49,7 @@ void AbstractVM::run(std::string fileName)
 		file.close();
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
-	const auto & acs = _parser->actions;
-	runActions(acs);
+	runActions(_parser->getActions());
 }
 
 void AbstractVM::runActions(const std::list<Action> & actions) {

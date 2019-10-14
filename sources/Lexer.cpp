@@ -30,7 +30,7 @@ Lexer const & Lexer::operator=(Lexer const & other) {
 		//_input = std::move(other._input);
 		_fullLine = other._fullLine;
 		_onlyOpLine = other._onlyOpLine;
-		//_lexems = other._lexems;
+		_lexems = other._lexems;
 		_isStandardInput = other._isStandardInput;
 	}
 	return *this;
