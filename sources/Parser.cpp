@@ -106,6 +106,8 @@ void Parser::run(){
 	while (nextCurrLexem()) {
 		addAction();
 	}
+	if (actions.back()._operation != Exit)
+		throw Exception("last instruction must be exit");
 	for (auto ac: actions){
 		std::cout << "\n ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << "	";
 		if (ac._operand) {

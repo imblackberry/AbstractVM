@@ -32,7 +32,6 @@ class Action {
 		Action(const Action & other);
 		Action const & operator=(Action const & other);
 
-		void run(){};
 	//private: todo
 		eOperation _operation;
 		const IOperand * _operand;

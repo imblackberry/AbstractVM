@@ -40,11 +40,12 @@ void	Lexer::makeLexems(){
 	std::string line;
 	std::smatch tokensInLine;
 
-	for (size_t i = 0; std::getline(_input, line).eof() != true; i++) {
-		std::cout << i << " line == |" << line << "|" << std::endl;
-		if (isEnd(line))
-			return ;
-		else if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
+	bool endFile;
+	do {
+		endFile = std::getline(_input, line).eof();
+		int i = 0;//del
+		std::cout << i++ << " line == |" << line << "|" << std::endl;//del
+		if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
 			if (!checkAndAddLexems(tokensInLine, _fullLine.lexemTypes))
 				return ;
 		}
@@ -54,7 +55,7 @@ void	Lexer::makeLexems(){
 		}
 		else if (!isCommentOrEmty(line))
 			throw Exception("lexical");
-	}
+	} while (!endFile && !isEnd(line));
 }
 
 std::vector<Lexem> & Lexer::getLexems() { return _lexems; }

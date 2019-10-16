@@ -40,8 +40,8 @@ class AbstractVM{
 		std::deque<const IOperand*> _operands;
 		std::unordered_map<eOperation, DoOperation > operationsMap;
 
-		std::unique_ptr<const IOperand> _tmpOp1 = nullptr;
-		std::unique_ptr<const IOperand> _tmpOp2 = nullptr;
+		std::shared_ptr<const IOperand> _tmpOp1 = nullptr;
+		std::shared_ptr<const IOperand> _tmpOp2 = nullptr;
 };
 
 #endif

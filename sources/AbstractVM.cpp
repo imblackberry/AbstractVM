@@ -13,12 +13,11 @@ AbstractVM::AbstractVM() {
 	operationsMap[Exit] = &AbstractVM::exit;
 };
 AbstractVM::~AbstractVM() {
-	// for (auto op :_operands) {
-	// 	delete op;
-	// }
-// if (_parser) {
 	// for (auto ac : _parser->getActions())
-		// delete ac._operand;
+	// 	delete ac._operand;
+	for (auto op :_operands)
+	 	delete op;
+// if (_parser) {
 // }
 };
 
