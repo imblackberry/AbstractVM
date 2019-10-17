@@ -21,7 +21,7 @@ class OperandFactory{
 		std::unique_ptr<IOperand const> createFloat(std::string const & value) const;
 		std::unique_ptr<IOperand const> createDouble(std::string const & value) const;
 
-		std::array<CreateFunctions, N_TYPES> _factory; //todo: array
+		std::array<CreateFunctions, N_TYPES> _factory;
 };
 
 

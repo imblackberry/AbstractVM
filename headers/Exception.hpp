@@ -7,7 +7,7 @@
 class Exception : public std::exception
 {
 	public:
-				
+
 		Exception();
 		virtual ~Exception(void) throw();
 		Exception(std::string const &message);

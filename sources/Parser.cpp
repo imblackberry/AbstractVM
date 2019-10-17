@@ -4,12 +4,14 @@ std::unique_ptr<IOperand const> Action::getOperand() {
 	return std::move(_operand);
 }
 
-Parser::Parser() {};
+Parser::Parser() { _currLexem = -1; };
 Parser::~Parser() {};
 
 Parser::Parser(std::vector<Lexem> & lexems):
 		_lexems(std::move(lexems))
-{ }
+{
+	_currLexem = -1;
+}
 
 Parser::Parser(const Parser & other) { *this = other; }
 
@@ -24,9 +26,9 @@ Parser const & Parser::operator=(Parser const & other) {
 
 bool Parser::nextCurrLexem() {
 	_currLexem++;
-	if (_currLexem >= static_cast<int>(_lexems.size()))
-		return false;
-	return true;
+	if (_currLexem < static_cast<int>(_lexems.size()))
+		return true;
+	return false;
 }
 Lexem Parser::getCurrLexem() { return _lexems[_currLexem]; }
 
