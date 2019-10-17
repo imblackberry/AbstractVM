@@ -35,11 +35,7 @@ void	Lexer::makeLexems(){
 	int lineNum = 1;
 	do {
 		endFile = std::getline(_input, line).eof();
-		if (endFile)
-			return ;
-		if (!isCommentOrEmty(line))
-			throw Exception("line " + std::to_string(lineNum) + ": lexical");
-		else if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
+		if (std::regex_match(line, tokensInLine, std::regex(_fullLine.expression.c_str()))) {
 			if (!checkAndAddLexems(tokensInLine, _fullLine.lexemTypes))
 				return ;
 		}
@@ -47,6 +43,8 @@ void	Lexer::makeLexems(){
 			if (!checkAndAddLexems(tokensInLine, _onlyOpLine.lexemTypes))
 				return ;
 		}
+		else if (!isCommentOrEmty(line))
+			throw Exception("line " + std::to_string(lineNum) + ": lexical");
 		lineNum++;
 	} while (!endFile && !isEnd(line));
 }
