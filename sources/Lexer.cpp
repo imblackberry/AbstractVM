@@ -74,7 +74,11 @@ bool Lexer::checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType
 }
 
 bool Lexer::isEnd(const std::string token) {
-	if (_isStandardInput && token == ";;")
+	std::string  endExpression = "[ \f\r\t\v]*;;[ \f\r\t\v]*";
+	std::smatch smatchToken;
+
+	if (_isStandardInput &&
+		std::regex_match(token, smatchToken, std::regex(endExpression)))
 		return true;
 	return false;
 }
