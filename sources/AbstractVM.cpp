@@ -47,7 +47,7 @@ void AbstractVM::runActions(std::vector<Action> actions) {
 		auto operand = it->getOperand();
 		(this->*doOperation)(std::move(operand));
 	}
-	if (actions.back().operation != Exit)
+	if (!actions.empty() && actions.back().operation != Exit)
 		throw Exception("last instruction must be exit");
 }
 

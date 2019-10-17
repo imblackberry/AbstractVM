@@ -47,6 +47,8 @@ void	Lexer::makeLexems(){
 			throw Exception("line " + std::to_string(lineNum) + ": lexical");
 		lineNum++;
 	} while (!endFile && !isEnd(line));
+	if (_lexems.empty())
+		throw Exception("empty stack");
 }
 
 std::vector<Lexem> & Lexer::getLexems() { return _lexems; }
