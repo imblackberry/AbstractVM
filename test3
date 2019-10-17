@@ -1,0 +1,4 @@
+push double(77) ;!
+push double(77) ;!
+dump
+exit

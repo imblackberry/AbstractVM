@@ -1,0 +1,4 @@
+push int8(33) ;!
+push int8(33) ;!
+dump
+exit
