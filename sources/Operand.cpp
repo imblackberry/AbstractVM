@@ -109,7 +109,7 @@ template <class T>
 IOperand const *	Operand<T>::operator+(IOperand const & rhs) const {
 	if (this->getPrecision() < rhs.getPrecision())
 		return rhs + *this;
-	return new Operand<T>(DoubleToString(getValue() + std::stod(rhs.toString()))); need i// cast ?
+	return new Operand<T>(DoubleToString(getValue() + std::stod(rhs.toString())));
 }
 
 template <class T>

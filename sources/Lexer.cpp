@@ -53,8 +53,7 @@ void	Lexer::makeLexems(){
 std::vector<Lexem> & Lexer::getLexems() { return _lexems; }
 
 bool	Lexer::addLexem(eLexemType lexemType, std::string token){
-	if (lexemType == Comment)
-	{
+	if (lexemType == Comment) {
 		if (isCommentOrEmty(token))
 			return true;
 		else
