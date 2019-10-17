@@ -12,10 +12,10 @@
 class AbstractVM{
 	typedef void (AbstractVM::*DoOperation)(std::unique_ptr<const IOperand>);
 	public:
-		AbstractVM();//TODO: read from file
+		AbstractVM();
 		~AbstractVM();
 		AbstractVM(const AbstractVM & other);
-		AbstractVM const & operator=(AbstractVM const & other);
+		AbstractVM const & operator=(AbstractVM const &);
 
 		void run(std::string fileName = std::string());
 	private:
@@ -29,7 +29,7 @@ class AbstractVM{
 		void mul(std::unique_ptr<const IOperand> );
 		void div(std::unique_ptr<const IOperand> );
 		void mod(std::unique_ptr<const IOperand> );
-		void print(std::unique_ptr<const IOperand> );//todo
+		void print(std::unique_ptr<const IOperand> );
 		void exit(std::unique_ptr<const IOperand> );
 		void preArithmeticOp();
 
@@ -38,9 +38,9 @@ class AbstractVM{
 		std::deque<std::unique_ptr<const IOperand> > _operands;
 		std::unordered_map<eOperation, DoOperation > operationsMap;
 
-		std::unique_ptr<const IOperand> _tmpOp1 = nullptr;
-		std::unique_ptr<const IOperand> _tmpOp2 = nullptr;
-		std::unique_ptr<const IOperand> t = nullptr;
+		std::unique_ptr<const IOperand> _tmpOp1;
+		std::unique_ptr<const IOperand> _tmpOp2;
+		std::unique_ptr<const IOperand> _tmpRes;
 };
 
 #endif

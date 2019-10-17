@@ -19,9 +19,7 @@ enum eLexemType{
 
 struct Lexem
 {
-	Lexem(eLexemType type, std::string const str) : type(type), capacity(str) {
-		std::cout << "type = " << type << " capacity = " << capacity << std::endl;
-	}
+	Lexem(eLexemType type, std::string const str) : type(type), capacity(str) {}
 	eLexemType		type;
 	std::string		capacity;
 };
@@ -34,20 +32,20 @@ class Lexer{
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		void	makeLexems();
-		std::vector<Lexem> & getLexems();
+		std::vector<Lexem> &	getLexems();
 
 	private:
 		struct Parse{
 			std::string expression;
-			std::vector<eLexemType> lexemTypes;//vector?
+			std::vector<eLexemType> lexemTypes;
 			Parse const & operator=(Parse const & other);
 		};
-		void init();
-		Lexem makeOperation(std::string & str);
-		bool addLexem(eLexemType lexemType, std::string token);
-		bool checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
-		bool isEnd(const std::string token);
-		bool isCommentOrEmty(const std::string token);
+		void	init();
+		Lexem	makeOperation(std::string & str);
+		bool	addLexem(eLexemType lexemType, std::string token);
+		bool	checkAndAddLexems(std::smatch & tokensInLine, std::vector<eLexemType> & lineTokenTypes);
+		bool	isEnd(const std::string token);
+		bool	isCommentOrEmty(const std::string token);
 
 		std::istream & _input;
 		Parse _fullLine;

@@ -75,22 +75,19 @@ void Parser::addAction(){
 	std::unique_ptr<IOperand const> operand = nullptr;
 	if (hasOperand(operation))
 		operand = getOperand();
-	//auto ac = Action(operation, std::move(operand));
 	actions.push_back({operation, std::move(operand)});
-	for (auto it = actions.begin(); it != actions.end(); it++) {
-	std::cout << "\n it->_option = " << validOps[static_cast<size_t>(it->operation)] << "	";
-	if (it->_operand) {
-		std::cout << "it->_operandType = " << validTypes[it->_operand->getPrecision()] << "	";
-		std::cout << "it->_operand = " << it->_operand->toString();
-	}
-	}
+	// for (auto it = actions.begin(); it != actions.end(); it++) {
+	// std::cout << "\n it->_option = " << validOps[static_cast<size_t>(it->operation)] << "	";
+	// if (it->_operand) {
+	// 	std::cout << "it->_operandType = " << validTypes[it->_operand->getPrecision()] << "	";
+	// 	std::cout << "it->_operand = " << it->_operand->toString();
+	// }
+	// }
 }
 void Parser::run() {
 	while (nextCurrLexem()) {
 		addAction();
 	}
-	if (actions.back().operation != Exit)
-		throw Exception("last instruction must be exit");
 }
 
 std::vector<Action> & Parser::getActions() { return actions; }

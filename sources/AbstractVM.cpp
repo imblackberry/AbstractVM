@@ -1,4 +1,5 @@
 #include "AbstractVM.hpp"
+
 AbstractVM::AbstractVM() {
 	operationsMap[Push] = &AbstractVM::push;
 	operationsMap[Pop] = &AbstractVM::pop;
@@ -16,14 +17,8 @@ AbstractVM::~AbstractVM() {};
 
 AbstractVM::AbstractVM(const AbstractVM & other){ *this = other; };
 
-AbstractVM const & AbstractVM::operator=(AbstractVM const & other) {
-	if (this != &other) {
-        //_lexer = std::move(other._lexer);//should nullptr???
-        //_parser = std::move(other._parser);//should nullptr???
-        //_operands = other._operands;
-	}
-	return *this;
-}
+AbstractVM const & AbstractVM::operator=(AbstractVM const &) { return *this; }
+
 void AbstractVM::run(std::string fileName)
 {
     std::ifstream file;
@@ -46,9 +41,14 @@ void AbstractVM::run(std::string fileName)
 
 void AbstractVM::runActions(std::vector<Action> actions) {
 	for (auto it = actions.begin(); it != actions.end(); it++) {
+		if (it->operation == Exit)
+			return ;
 		auto doOperation = operationsMap[it->operation];
 		auto operand = it->getOperand();
-		(this->*doOperation)(std::move(operand));}
+		(this->*doOperation)(std::move(operand));
+	}
+	if (actions.back().operation != Exit)
+		throw Exception("last instruction must be exit");
 }
 
 void AbstractVM::push(std::unique_ptr<const IOperand> operand) {
@@ -81,40 +81,36 @@ void AbstractVM::assertF(std::unique_ptr<const IOperand> operand) {
 void AbstractVM::add(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
 	const IOperand * res = *_tmpOp1 + *_tmpOp2;
-	t.reset(res);
-	_operands.push_front(std::move(t));
+	_tmpRes.reset(res);
+	_operands.push_front(std::move(_tmpRes));
 }
 
 void AbstractVM::sub(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
 	const IOperand * res = *_tmpOp1 - *_tmpOp2;
-	t.reset(res);
-	_operands.push_front(std::move(t));
+	_tmpRes.reset(res);
+	_operands.push_front(std::move(_tmpRes));
 }
 
 void AbstractVM::mul(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
 	const IOperand * res = *_tmpOp1 * *_tmpOp2;
-	t.reset(res);
-	_operands.push_front(std::move(t));
+	_tmpRes.reset(res);
+	_operands.push_front(std::move(_tmpRes));
 }
 
 void AbstractVM::div(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	// if (_tmpOp2->toString() == "0")//hrn
-	// 	throw Exception("division by 0");
 	const IOperand * res = *_tmpOp1 / *_tmpOp2;
-	t.reset(res);
-	_operands.push_front(std::move(t));
+	_tmpRes.reset(res);
+	_operands.push_front(std::move(_tmpRes));
 }
 
 void AbstractVM::mod(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	// if (_tmpOp2->toString() == "0")//hrn
-	// 	throw Exception("modulo by 0");
 	const IOperand * res = *_tmpOp1 % *_tmpOp2;
-	t.reset(res);
-	_operands.push_front(std::move(t));
+	_tmpRes.reset(res);
+	_operands.push_front(std::move(_tmpRes));
 }
 
 void AbstractVM::print(std::unique_ptr<const IOperand>) {
@@ -126,9 +122,7 @@ void AbstractVM::print(std::unique_ptr<const IOperand>) {
 	std::cout << static_cast<char>(std::stoi(op->toString())) << std::endl;
 }
 
-void AbstractVM::exit(std::unique_ptr<const IOperand>) {
-	
-}
+void AbstractVM::exit(std::unique_ptr<const IOperand>) { }
 
 void AbstractVM::preArithmeticOp() {
 	if (_operands.size() < MIN_SIZE_FOR_MATH_OP)
