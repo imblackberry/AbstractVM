@@ -17,6 +17,6 @@ int main(int ac, char **av) {
 		std::cout << RED_BOLD << "Error" << END_STYLE << ": " << e.what() << std::endl;
 	}
 }
-	system("leaks avm");
+	//system("leaks avm");
 	return 0;
 }

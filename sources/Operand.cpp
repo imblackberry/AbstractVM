@@ -9,8 +9,6 @@ Operand<T>::~Operand(){}
 template <class T>
 Operand<T>::Operand(std::string str) {
 	double tmp = std::stod(str);
-	if (str.front() == '0')
-		throw Exception("value starts with 0");
 	if (tmp < std::numeric_limits<T>::min())
 		throw Exception("stack underflow");
 	else if (tmp > std::numeric_limits<T>::max())
@@ -51,10 +49,13 @@ template<>
 int					Operand<int8_t>::getPrecision(void) const{ return Int8; }
 template <>
 IOperand const *	Operand<int8_t>::operator%(IOperand const & rhs) const{
+	auto otherVal = std::stoi(rhs.toString());
+	if (getValue() == 0 || otherVal == 0)
+		throw Exception("div with 0");
 	if (rhs.getType() >= eOperandType::Float ||
 		this->getPrecision() < rhs.getPrecision())
 		return rhs % *this;
-	return new Operand<int8_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+	return new Operand<int8_t>(DoubleToString(getValue() % otherVal));
 }
 
 template<>
@@ -63,10 +64,13 @@ template<>
 int					Operand<int16_t>::getPrecision(void) const{ return Int16; }
 template<>
 IOperand const *	Operand<int16_t>::operator%(IOperand const & rhs) const{
+	auto otherVal = std::stoi(rhs.toString());
+	if (getValue() == 0 || otherVal == 0)
+		throw Exception("div with 0");
 	if (rhs.getType() >= eOperandType::Float ||
 		this->getPrecision() < rhs.getPrecision())
 		return rhs % *this;
-	return new Operand<int16_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+	return new Operand<int16_t>(DoubleToString(getValue() % otherVal));
 }
 
 template<>
@@ -75,10 +79,13 @@ template<>
 int					Operand<int32_t>::getPrecision(void) const{ return Int32; }
 template<>
 IOperand const *	Operand<int32_t>::operator%(IOperand const & rhs) const{
+	auto otherVal = std::stoi(rhs.toString());
+	if (getValue() == 0 || otherVal == 0)
+		throw Exception("div with 0");
 	if (rhs.getType() >= eOperandType::Float ||
 		this->getPrecision() < rhs.getPrecision())
 		return rhs % *this;
-	return new Operand<int32_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+	return new Operand<int32_t>(DoubleToString(getValue() % otherVal));
 }
 
 template<>
