@@ -11,9 +11,9 @@ Lexer::Lexer(std::istream & input) : _input(input){
 	_isStandardInput = false;
 }
 
-Lexer::Lexer(const Lexer & other) : _input(other._input){
-	*this = other;
-}
+Lexer::Lexer(const Lexer & other) : _input(other._input){ *this = other; }
+
+Lexer const & Lexer::operator=(Lexer const &) { return *this; }
 
 void Lexer::init() {
 	const std::string allLexemTypesParse(std::string("[ \f\r\t\v]*([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
@@ -25,7 +25,6 @@ void Lexer::init() {
 	_onlyOpLine = {onlyOpLexemParse, onlyOpLexemTypes};
 }
 
-Lexer const & Lexer::operator=(Lexer const &) { return *this; }
 
 void	Lexer::makeLexems(){
 	std::string line = "";

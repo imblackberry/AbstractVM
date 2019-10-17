@@ -10,9 +10,7 @@ Exception::Exception(Exception const & other) {
 Exception::Exception(std::string const & message) :
 	_message(message) { }
 
-Exception & Exception::operator=(Exception const &) {
-	return *this;
-}
+Exception & Exception::operator=(Exception const &) { return *this; }
 
 const char* Exception::what() const throw() {
 	return _message.c_str();

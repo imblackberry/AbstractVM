@@ -18,7 +18,6 @@ Parser::Parser(const Parser & other) { *this = other; }
 Parser const & Parser::operator=(Parser const & other) {
 	if (this != &other) {
 		_currLexem = other._currLexem;
-		//actions = other.actions;
 		_lexems = other._lexems;
 	}
 	return *this;
@@ -78,14 +77,8 @@ void Parser::addAction(){
 	if (hasOperand(operation))
 		operand = getOperand();
 	actions.push_back({operation, std::move(operand)});
-	// for (auto it = actions.begin(); it != actions.end(); it++) {
-	// std::cout << "\n it->_option = " << validOps[static_cast<size_t>(it->operation)] << "	";
-	// if (it->_operand) {
-	// 	std::cout << "it->_operandType = " << validTypes[it->_operand->getPrecision()] << "	";
-	// 	std::cout << "it->_operand = " << it->_operand->toString();
-	// }
-	// }
 }
+
 void Parser::run() {
 	while (nextCurrLexem()) {
 		addAction();

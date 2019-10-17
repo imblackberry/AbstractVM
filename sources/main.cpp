@@ -3,7 +3,6 @@
 #include "Exception.hpp"
 
 int main(int ac, char **av) {
-{
 	AbstractVM vm;
 	try {
 		if (ac == NO_ARGS)
@@ -16,7 +15,5 @@ int main(int ac, char **av) {
 	} catch (const std::exception &e) {
 		std::cout << RED_BOLD << "Error" << END_STYLE << ": " << e.what() << std::endl;
 	}
-}
-	//system("leaks avm");
 	return 0;
 }
