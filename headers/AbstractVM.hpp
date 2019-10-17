@@ -6,8 +6,6 @@
 #include "IOperand.hpp"
 #include "Exception.hpp"
 #define NO_ARGS 1
-//TODO
-//author file???
 
 class AbstractVM{
 	typedef void (AbstractVM::*DoOperation)(std::unique_ptr<const IOperand>);

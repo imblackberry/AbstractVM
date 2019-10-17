@@ -9,9 +9,7 @@ Parser::~Parser() {};
 
 Parser::Parser(std::vector<Lexem> & lexems):
 		_lexems(std::move(lexems))
-{
-	_currLexem = -1;
-}
+{ _currLexem = -1; }
 
 Parser::Parser(const Parser & other) { *this = other; }
 
