@@ -18,7 +18,7 @@ Lexer::Lexer(const Lexer & other) : _input(other._input){
 void Lexer::init() {
 	const std::string allLexemTypesParse(std::string("([a-z]+)[ \f\r\t\v]+([a-z]+[0-9]*)\\((")
 				+ INTEGER_VALUE + "|" + FRACTION_VALUE + ")\\)[ \f\r\t\v]*(.*)");
-	std::vector<eLexemType> allLexemTypes = {Operation, eOperandType, Value, Comment};
+	std::vector<eLexemType> allLexemTypes = {Operation, OperandType, Value, Comment};
 	_fullLine = {allLexemTypesParse, allLexemTypes};
 	const std::string onlyOpLexemParse("([a-z]+)[ \f\r\t\v]*(.*)");
 	std::vector<eLexemType> onlyOpLexemTypes = {Operation, Comment};

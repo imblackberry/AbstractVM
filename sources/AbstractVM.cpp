@@ -46,11 +46,9 @@ void AbstractVM::run(std::string fileName)
 
 void AbstractVM::runActions(std::vector<Action> actions) {
 	for (auto it = actions.begin(); it != actions.end(); it++) {
-		auto doOperation = operationsMap[it->_operation];
-		std::unique_ptr<const IOperand> operand = it->getOperand();
-		(this->*doOperation)(std::move(operand));
-		std::cout << "SIZE = " << _operands.size() << std::endl;
-	}
+		auto doOperation = operationsMap[it->operation];
+		auto operand = it->getOperand();
+		(this->*doOperation)(std::move(operand));}
 }
 
 void AbstractVM::push(std::unique_ptr<const IOperand> operand) {
@@ -103,8 +101,8 @@ void AbstractVM::mul(std::unique_ptr<const IOperand>) {
 
 void AbstractVM::div(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	if (_tmpOp2->toString() == "0")//hrn
-		throw Exception("division by 0");
+	// if (_tmpOp2->toString() == "0")//hrn
+	// 	throw Exception("division by 0");
 	const IOperand * res = *_tmpOp1 / *_tmpOp2;
 	t.reset(res);
 	_operands.push_front(std::move(t));
@@ -112,8 +110,8 @@ void AbstractVM::div(std::unique_ptr<const IOperand>) {
 
 void AbstractVM::mod(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	if (_tmpOp2->toString() == "0")//hrn
-		throw Exception("modulo by 0");
+	// if (_tmpOp2->toString() == "0")//hrn
+	// 	throw Exception("modulo by 0");
 	const IOperand * res = *_tmpOp1 % *_tmpOp2;
 	t.reset(res);
 	_operands.push_front(std::move(t));

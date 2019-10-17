@@ -8,8 +8,6 @@
 #define NO_ARGS 1
 //TODO
 //author file???
-//Exceptions (over, under)
-//exit (Exception, need command?)
 
 class AbstractVM{
 	typedef void (AbstractVM::*DoOperation)(std::unique_ptr<const IOperand>);

@@ -10,10 +10,10 @@
 #define FRACTION_VALUE "[-]?[0-9]+.[0-9]+"
 
 enum eLexemType{
-	Operation, //0
-	eOperandType, //1
-	Value, //2
-	NN, //3
+	Operation,
+	OperandType,
+	Value,
+	NN,
 	Comment = NN
 };
 
@@ -30,7 +30,7 @@ class Lexer{
 	public:
 		Lexer();
 		~Lexer();
-		Lexer(std::istream & input);// ?
+		Lexer(std::istream & input);
 		Lexer(const Lexer & other);
 		Lexer const & operator=(Lexer const & other);
 		void	makeLexems();

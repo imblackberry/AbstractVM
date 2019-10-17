@@ -16,7 +16,7 @@ class Operand : public IOperand{
 		Operand const & operator=(Operand const & other);
 		T const 			getValue() const;
 		int					getPrecision(void) const;	// Precision of the type of the instance
-		enum eOperandType   getType(void) const;	// Type of the instance
+		eOperandType   getType(void) const;	// Type of the instance
 		IOperand const *	operator+(IOperand const & rhs) const; // Sum
 		IOperand const *	operator-(IOperand const & rhs) const; // Difference
 		IOperand const *	operator*(IOperand const & rhs) const; // Product

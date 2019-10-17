@@ -1,39 +1,11 @@
 #include "Parser.hpp"
 
-// Action::Action() : _operation(eOperation::N_OPS), _operand(nullptr) {};
-// Action::~Action() {};
-
-// Action::Action(eOperation operation, std::unique_ptr<IOperand const> operand) :
-// 	_operation(operation), _operand(std::move(operand)) {};
-
-// Action::Action(const Action & other){ *this = other; };
-
-// Action const & Action::operator=(Action const & other) {
-// 	if (this != & other) {
-// 		_operation = other._operation;
-// 		//_operand = std::move(other._operand);
-// 	}
-// 	return *this;
-// }
-
 std::unique_ptr<IOperand const> Action::getOperand() {
 	return std::move(_operand);
 }
 
 Parser::Parser() {};
-Parser::~Parser() {
-	// for (auto ac : actions){
-	// 	(void)ac._operand;
-	// 	std::cout << "DESTRUCTOR" << std::endl;
-	// 	std::cout << "\n ac._operand = " << validOps[static_cast<size_t>(ac._operation)] << "	";
-	// 	if (ac._operand) {
-	// 		std::cout << "ac._operandType = " << validTypes[ac._operand->getPrecision()] << "	";
-	// 		std::cout << "ac._operand = " << ac._operand->toString();
-	// 	}
-	 	// if (ac._operand)
-			// delete ac._operand;
-	// }
-};
+Parser::~Parser() {};
 
 Parser::Parser(std::vector<Lexem> & lexems):
 		_lexems(std::move(lexems))
@@ -75,22 +47,22 @@ enum eOperation Parser::getOperation() {
 	throw Exception("an instruction is unknown");
 }
 
-enum eOperandType Parser::getOperandType() {
+eOperandType Parser::getOperandType() {
 	nextCurrLexem();
 	Lexem lexem = getCurrLexem();
-	if (lexem.type == eLexemType::eOperandType) {
+	if (lexem.type == eLexemType::OperandType) {
 		auto it = std::find_if(validTypes.begin(), validTypes.end(), [&lexem](std::string op){
 			return op == lexem.capacity ? true : false;
 		});
 		if (it != validTypes.end())
-			return static_cast<enum eOperandType>(it - validTypes.begin());
+			return static_cast<eOperandType>(it - validTypes.begin());
 	}
 	throw Exception("a value type is unknown");
 }
 
 std::unique_ptr<IOperand const> Parser::getOperand() {
 	OperandFactory factory;
-	enum eOperandType type = getOperandType();
+	eOperandType type = getOperandType();
 	nextCurrLexem();
 	Lexem operandLexem = getCurrLexem();
 	if (operandLexem.type == Value)
@@ -106,7 +78,7 @@ void Parser::addAction(){
 	//auto ac = Action(operation, std::move(operand));
 	actions.push_back({operation, std::move(operand)});
 	for (auto it = actions.begin(); it != actions.end(); it++) {
-	std::cout << "\n it->_option = " << validOps[static_cast<size_t>(it->_operation)] << "	";
+	std::cout << "\n it->_option = " << validOps[static_cast<size_t>(it->operation)] << "	";
 	if (it->_operand) {
 		std::cout << "it->_operandType = " << validTypes[it->_operand->getPrecision()] << "	";
 		std::cout << "it->_operand = " << it->_operand->toString();
@@ -117,7 +89,7 @@ void Parser::run() {
 	while (nextCurrLexem()) {
 		addAction();
 	}
-	if (actions.back()._operation != Exit)
+	if (actions.back().operation != Exit)
 		throw Exception("last instruction must be exit");
 }
 

@@ -1,6 +1,7 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 #include <array>
+#include <unordered_map>
 #include <vector>
 #include "Lexer.hpp"
 #include "IOperand.hpp"
@@ -25,17 +26,10 @@ enum eOperation{
 };
 
 struct Action {
-	public:
-		// Action();
-		// ~Action();
-		// Action(eOperation operation, std::unique_ptr<IOperand const> operand);
-		// Action(const Action & other);
-		// Action const & operator=(Action const & other);
-		std::unique_ptr<IOperand const> getOperand();
-
-	//private: todo
-		eOperation _operation;
+	std::unique_ptr<IOperand const> getOperand();
+	eOperation operation;
 		std::unique_ptr<IOperand const> _operand;
+	private:
 };
 
 class Parser{
@@ -53,7 +47,7 @@ class Parser{
 		Lexem getCurrLexem();
 		bool hasOperand(const eOperation operation);
 		enum eOperation getOperation();
-		enum eOperandType getOperandType();
+		eOperandType getOperandType();
 		std::unique_ptr<IOperand const> getOperand();
 		void addAction();
 	private:
