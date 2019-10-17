@@ -44,7 +44,7 @@ void	Lexer::makeLexems(){
 				return ;
 		}
 		else if (!isCommentOrEmty(line))
-			throw Exception("line " + std::to_string(lineNum) + ": lexical");
+			throw Exception("line " + std::to_string(lineNum));
 		lineNum++;
 	} while (!endFile && !isEnd(line));
 	if (_lexems.empty())
@@ -59,7 +59,7 @@ bool	Lexer::addLexem(eLexemType lexemType, std::string token){
 		if (isCommentOrEmty(token))
 			return true;
 		else
-			throw Exception("lexical");
+			throw Exception("at \"" + token +  "\"");
 	}
 	if (lexemType < NN)
 		_lexems.push_back({lexemType, token});

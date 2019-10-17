@@ -9,6 +9,8 @@ Operand<T>::~Operand(){}
 template <class T>
 Operand<T>::Operand(std::string str) {
 	double tmp = std::stod(str);
+	if (str.front() == '0')
+		throw Exception("value starts with 0");
 	if (tmp < std::numeric_limits<T>::min())
 		throw Exception("stack underflow");
 	else if (tmp > std::numeric_limits<T>::max())
@@ -119,9 +121,12 @@ IOperand const * Operand<T>::operator-(IOperand const & rhs) const{
 
 template <class T>
 IOperand const *	Operand<T>::operator/(IOperand const & rhs) const{
+	auto otherVal = std::stod(rhs.toString());
+	if (getValue() == 0 || otherVal == 0)
+		throw Exception("div with 0");
 	if (this->getPrecision() < rhs.getPrecision())
 		return rhs / *this;
-	return new Operand<T>(DoubleToString(getValue() / std::stod(rhs.toString())));
+	return new Operand<T>(DoubleToString(getValue() / otherVal));
 }
 
 // template <class T>
