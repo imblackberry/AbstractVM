@@ -29,7 +29,6 @@ void Lexer::init() {
 void	Lexer::makeLexems(){
 	std::string line = "";
 	std::smatch tokensInLine;
-
 	bool endFile;
 	int lineNum = 1;
 	do {

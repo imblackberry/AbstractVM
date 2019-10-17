@@ -37,6 +37,7 @@ void AbstractVM::run(std::string fileName)
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
 	runActions(std::move(_parser->getActions()));
+	_operands.clear();
 }
 
 void AbstractVM::runActions(std::vector<Action> actions) {
