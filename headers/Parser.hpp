@@ -52,7 +52,7 @@ class Parser{
 		void addAction();
 	private:
 		int _currLexem = -1;
-		std::vector<Action> actions;
+		std::vector<Action> _actions;
 		std::vector<Lexem> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",

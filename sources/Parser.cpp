@@ -74,7 +74,7 @@ void Parser::addAction(){
 	std::unique_ptr<IOperand const> operand = nullptr;
 	if (hasOperand(operation))
 		operand = getOperand();
-	actions.push_back({operation, std::move(operand)});
+	_actions.push_back({operation, std::move(operand)});
 }
 
 void Parser::run() {
@@ -83,4 +83,4 @@ void Parser::run() {
 	}
 }
 
-std::vector<Action> & Parser::getActions() { return actions; }
+std::vector<Action> & Parser::getActions() { return _actions; }
