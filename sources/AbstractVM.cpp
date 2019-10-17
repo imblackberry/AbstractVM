@@ -12,14 +12,7 @@ AbstractVM::AbstractVM() {
 	operationsMap[Print] = &AbstractVM::print;
 	operationsMap[Exit] = &AbstractVM::exit;
 };
-AbstractVM::~AbstractVM() {
-	// for (auto ac : _parser->getActions())
-	// 	delete ac._operand;
-	for (auto op :_operands)
-	 	delete op;
-// if (_parser) {
-// }
-};
+AbstractVM::~AbstractVM() {};
 
 AbstractVM::AbstractVM(const AbstractVM & other){ *this = other; };
 
@@ -27,7 +20,7 @@ AbstractVM const & AbstractVM::operator=(AbstractVM const & other) {
 	if (this != &other) {
         //_lexer = std::move(other._lexer);//should nullptr???
         //_parser = std::move(other._parser);//should nullptr???
-        _operands = other._operands;
+        //_operands = other._operands;
 	}
 	return *this;
 }
@@ -48,95 +41,102 @@ void AbstractVM::run(std::string fileName)
 		file.close();
     _parser = std::make_unique<Parser>(_lexer->getLexems());
     _parser->run();
-	runActions(_parser->getActions());
+	runActions(std::move(_parser->getActions()));
 }
 
-void AbstractVM::runActions(const std::list<Action> & actions) {
-	for (auto ac : actions) {
-		auto doOperation = operationsMap[ac._operation];
-		(this->*doOperation)(ac._operand);
+void AbstractVM::runActions(std::vector<Action> actions) {
+	for (auto it = actions.begin(); it != actions.end(); it++) {
+		auto doOperation = operationsMap[it->_operation];
+		std::unique_ptr<const IOperand> operand = it->getOperand();
+		(this->*doOperation)(std::move(operand));
+		std::cout << "SIZE = " << _operands.size() << std::endl;
 	}
 }
 
-void AbstractVM::push(const IOperand* operand) {
+void AbstractVM::push(std::unique_ptr<const IOperand> operand) {
 	if (operand)
-		_operands.push_front(operand);
+		_operands.push_front(std::move(operand));
 }
 
-void AbstractVM::pop(const IOperand*)
+void AbstractVM::pop(std::unique_ptr<const IOperand>)
 {
 	if (_operands.size() == 0)
 		throw Exception("stack is empty");
-	delete _operands.front();
 	_operands.pop_front();
 }
 
-void AbstractVM::dump(const IOperand*) {
-	for (auto op : _operands)
-		std::cout << op->toString() << std::endl;
+void AbstractVM::dump(std::unique_ptr<const IOperand>) {
+	for (size_t i = 0; i < _operands.size(); i++)
+		std::cout << _operands[i]->toString() << std::endl;
 }
 
-void AbstractVM::assertF(const IOperand* operand) {
+void AbstractVM::assertF(std::unique_ptr<const IOperand> operand) {
 	if (_operands.empty())
 		throw Exception("stack is empty");
 	if (operand) {
 		if (operand->getType() != _operands.front()->getType() ||
 				operand->toString() != _operands.front()->toString())
-		{
-			delete operand;
 			throw Exception("assertion is failed");
-		}
-		delete operand;
 	}
 }
 
-void AbstractVM::add(const IOperand*) {
+void AbstractVM::add(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	_operands.push_front(*_tmpOp1 + *_tmpOp2);
+	const IOperand * res = *_tmpOp1 + *_tmpOp2;
+	t.reset(res);
+	_operands.push_front(std::move(t));
 }
 
-void AbstractVM::sub(const IOperand*) {
+void AbstractVM::sub(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	_operands.push_front(*_tmpOp1 - *_tmpOp2);
+	const IOperand * res = *_tmpOp1 - *_tmpOp2;
+	t.reset(res);
+	_operands.push_front(std::move(t));
 }
 
-void AbstractVM::mul(const IOperand*) {
+void AbstractVM::mul(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	_operands.push_front(*_tmpOp1 * *_tmpOp2);
+	const IOperand * res = *_tmpOp1 * *_tmpOp2;
+	t.reset(res);
+	_operands.push_front(std::move(t));
 }
 
-void AbstractVM::div(const IOperand*) {
+void AbstractVM::div(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	if (_tmpOp2->toString() == "0")
+	if (_tmpOp2->toString() == "0")//hrn
 		throw Exception("division by 0");
-	_operands.push_front(*_tmpOp1 / *_tmpOp2);
+	const IOperand * res = *_tmpOp1 / *_tmpOp2;
+	t.reset(res);
+	_operands.push_front(std::move(t));
 }
 
-void AbstractVM::mod(const IOperand*) {
+void AbstractVM::mod(std::unique_ptr<const IOperand>) {
 	preArithmeticOp();
-	if (_tmpOp2->toString() == "0")
+	if (_tmpOp2->toString() == "0")//hrn
 		throw Exception("modulo by 0");
-	_operands.push_front(*_tmpOp1 % *_tmpOp2);
+	const IOperand * res = *_tmpOp1 % *_tmpOp2;
+	t.reset(res);
+	_operands.push_front(std::move(t));
 }
 
-void AbstractVM::print(const IOperand*) {
+void AbstractVM::print(std::unique_ptr<const IOperand>) {
 	if (_operands.empty())
 		throw Exception("stack is empty");
-	IOperand const * op = this->_operands.front();
+	auto op = std::move(_operands.front());
 	if (op->getType() != eOperandType::Int8)
 		throw Exception("operand with type int8 required");
 	std::cout << static_cast<char>(std::stoi(op->toString())) << std::endl;
 }
 
-void AbstractVM::exit(const IOperand*) {
+void AbstractVM::exit(std::unique_ptr<const IOperand>) {
 	
 }
 
 void AbstractVM::preArithmeticOp() {
 	if (_operands.size() < MIN_SIZE_FOR_MATH_OP)
 		throw Exception("stack is too small");
-	_tmpOp1.reset(_operands.front());
+	_tmpOp1 = std::move(_operands.front());
 	_operands.pop_front();
-	_tmpOp2.reset(_operands.front());
+	_tmpOp2 = std::move(_operands.front());
 	_operands.pop_front();
 }

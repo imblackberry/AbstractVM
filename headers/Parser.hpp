@@ -1,7 +1,7 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 #include <array>
-#include <list>
+#include <vector>
 #include "Lexer.hpp"
 #include "IOperand.hpp"
 #include "OperandFactory.hpp"
@@ -24,17 +24,18 @@ enum eOperation{
 	N_OPS
 };
 
-class Action {
+struct Action {
 	public:
-		Action();
-		~Action();
-		Action(eOperation operation, const IOperand * operand);
-		Action(const Action & other);
-		Action const & operator=(Action const & other);
+		// Action();
+		// ~Action();
+		// Action(eOperation operation, std::unique_ptr<IOperand const> operand);
+		// Action(const Action & other);
+		// Action const & operator=(Action const & other);
+		std::unique_ptr<IOperand const> getOperand();
 
 	//private: todo
 		eOperation _operation;
-		const IOperand * _operand;
+		std::unique_ptr<IOperand const> _operand;
 };
 
 class Parser{
@@ -45,7 +46,7 @@ class Parser{
 		Parser(const Parser & other);
 		Parser const & operator=(Parser const & other);
 		void run();
-		const std::list<Action> & getActions();
+		std::vector<Action> & getActions();
 
 	private:
 		bool nextCurrLexem();
@@ -53,11 +54,11 @@ class Parser{
 		bool hasOperand(const eOperation operation);
 		enum eOperation getOperation();
 		enum eOperandType getOperandType();
-		const IOperand * getOperand();
+		std::unique_ptr<IOperand const> getOperand();
 		void addAction();
 	private:
 		int _currLexem = -1;
-		std::list<Action> actions;
+		std::vector<Action> actions;
 		std::vector<Lexem> _lexems;
 		static constexpr size_t N_TYPES = 5;
 		const std::array<std::string, N_OPS> validOps = { { "push", "pop", "dump", "assert", "add",

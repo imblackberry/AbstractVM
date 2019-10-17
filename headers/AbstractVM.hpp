@@ -12,7 +12,7 @@
 //exit (Exception, need command?)
 
 class AbstractVM{
-	typedef void (AbstractVM::*DoOperation)(const IOperand*);
+	typedef void (AbstractVM::*DoOperation)(std::unique_ptr<const IOperand>);
 	public:
 		AbstractVM();//TODO: read from file
 		~AbstractVM();
@@ -21,27 +21,28 @@ class AbstractVM{
 
 		void run(std::string fileName = std::string());
 	private:
-		void runActions(const std::list<Action> & actions);
-		void push(const IOperand* operand);
-		void pop(const IOperand*);
-		void dump(const IOperand*);
-		void assertF(const IOperand* operand);
-		void add(const IOperand*);
-		void sub(const IOperand*);
-		void mul(const IOperand*);
-		void div(const IOperand*);
-		void mod(const IOperand*);
-		void print(const IOperand*);//todo
-		void exit(const IOperand*);
+		void runActions(std::vector<Action> actions);
+		void push(std::unique_ptr<const IOperand>  operand);
+		void pop(std::unique_ptr<const IOperand> );
+		void dump(std::unique_ptr<const IOperand> );
+		void assertF(std::unique_ptr<const IOperand>  operand);
+		void add(std::unique_ptr<const IOperand> );
+		void sub(std::unique_ptr<const IOperand> );
+		void mul(std::unique_ptr<const IOperand> );
+		void div(std::unique_ptr<const IOperand> );
+		void mod(std::unique_ptr<const IOperand> );
+		void print(std::unique_ptr<const IOperand> );//todo
+		void exit(std::unique_ptr<const IOperand> );
 		void preArithmeticOp();
 
 		std::unique_ptr<Lexer> _lexer;
 		std::unique_ptr<Parser> _parser;
-		std::deque<const IOperand*> _operands;
+		std::deque<std::unique_ptr<const IOperand> > _operands;
 		std::unordered_map<eOperation, DoOperation > operationsMap;
 
-		std::shared_ptr<const IOperand> _tmpOp1 = nullptr;
-		std::shared_ptr<const IOperand> _tmpOp2 = nullptr;
+		std::unique_ptr<const IOperand> _tmpOp1 = nullptr;
+		std::unique_ptr<const IOperand> _tmpOp2 = nullptr;
+		std::unique_ptr<const IOperand> t = nullptr;
 };
 
 #endif

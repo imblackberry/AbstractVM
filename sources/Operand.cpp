@@ -47,26 +47,54 @@ template<>
 eOperandType		Operand<int8_t>::getType(void) const{ return Int8; }
 template<>
 int					Operand<int8_t>::getPrecision(void) const{ return Int8; }
+template <>
+IOperand const *	Operand<int8_t>::operator%(IOperand const & rhs) const{
+	if (rhs.getType() >= eOperandType::Float ||
+		this->getPrecision() < rhs.getPrecision())
+		return rhs % *this;
+	return new Operand<int8_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+}
 
 template<>
 eOperandType		Operand<int16_t>::getType(void) const{ return Int16; }
 template<>
 int					Operand<int16_t>::getPrecision(void) const{ return Int16; }
+template<>
+IOperand const *	Operand<int16_t>::operator%(IOperand const & rhs) const{
+	if (rhs.getType() >= eOperandType::Float ||
+		this->getPrecision() < rhs.getPrecision())
+		return rhs % *this;
+	return new Operand<int16_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+}
 
 template<>
 eOperandType		Operand<int32_t>::getType(void) const{ return Int32; }
 template<>
 int					Operand<int32_t>::getPrecision(void) const{ return Int32; }
+template<>
+IOperand const *	Operand<int32_t>::operator%(IOperand const & rhs) const{
+	if (rhs.getType() >= eOperandType::Float ||
+		this->getPrecision() < rhs.getPrecision())
+		return rhs % *this;
+	return new Operand<int32_t>(DoubleToString(getValue() % std::stoi(rhs.toString())));
+}
 
 template<>
 eOperandType		Operand<float>::getType(void) const{ return Float; }
 template<>
 int					Operand<float>::getPrecision(void) const{ return Float; }
-
+template<>
+IOperand const *	Operand<float>::operator%(IOperand const &) const{
+	throw Exception("mod floating point");
+}
 template<>
 eOperandType		Operand<double>::getType(void) const{ return Double; }
 template<>
 int					Operand<double>::getPrecision(void) const{ return Double; }
+template<>
+IOperand const *	Operand<double>::operator%(IOperand const &) const{
+	throw Exception("mod floating point");
+}
 
 template <class T>
 IOperand const *	Operand<T>::operator+(IOperand const & rhs) const {
@@ -84,26 +112,28 @@ IOperand const *	Operand<T>::operator*(IOperand const & rhs) const{
 
 template <class T>
 IOperand const * Operand<T>::operator-(IOperand const & rhs) const{
-	OperandFactory factory;
-
-	eOperandType type = std::max(getType(), rhs.getType());
-	return factory.createOperand(type, DoubleToString(getValue() - std::stod(rhs.toString())));
+	if (this->getPrecision() < rhs.getPrecision())
+		return rhs - *this;
+	return new Operand<T>(DoubleToString(getValue() - std::stod(rhs.toString())));
 }
 
 template <class T>
 IOperand const *	Operand<T>::operator/(IOperand const & rhs) const{
-	OperandFactory factory;
-
-	eOperandType type = std::max(getType(), rhs.getType());
-	return factory.createOperand(type, DoubleToString(getValue() / std::stod(rhs.toString())));
+	if (this->getPrecision() < rhs.getPrecision())
+		return rhs / *this;
+	return new Operand<T>(DoubleToString(getValue() / std::stod(rhs.toString())));
 }
-template <class T>
-IOperand const *	Operand<T>::operator%(IOperand const & rhs) const{
-	OperandFactory factory;
 
-	eOperandType type = std::max(getType(), rhs.getType());
-	return factory.createOperand(type, DoubleToString(fmod(getValue(), std::stod(rhs.toString()))));
-}
+// template <class T>
+// IOperand const *	Operand<T>::operator%(IOperand const & rhs) const{
+// 	if (rhs.getType() >= eOperandType::Float)
+// 		throw Exception("mod floating point");
+// 	else {
+// 		if (this->getPrecision() < rhs.getPrecision())
+// 			return rhs % *this;
+// 		return new Operand<T>(DoubleToString(getValue() % std::stod(rhs.toString())));
+// 	}
+// }
 
 // --------------------------------------------------------------------------//
 // 								5 CLASS DECLARATION							 //
